@@ -1,0 +1,38 @@
+service: gma-service-api
+
+provider:
+  name: aws
+  runtime: nodejs10.x
+  stage: production
+  region: us-east-1
+  profile: snowplow
+  environment: ${file(serverless/environment.js)}
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - SQS:SendMessage
+        - SQS:SendMessageBatch
+      Resource:
+        - ${env:SQS_CRU_EVENTS_ARN}
+  $<<: ${file(serverless/provider.js)}
+
+functions:
+  kinesis:
+    handler: handlers/events.handler
+    events:
+      - stream:
+          arn: ${env:KINESIS_SNOWPLOW_ENRICH_ARN}
+          batchSize: 25
+          startingPosition: LATEST
+          enabled: false
+
+package:
+  exclude:
+    - .git/**
+    - test/**
+    - '**/*.test.js'
+    - '**/*.sql'
+    - .deployment/**
+
+plugins:
+  - '@cruglobal/serverless-merge-config'

@@ -1,0 +1,30 @@
+{
+  "name": "cru-udp-pipeline",
+  "version": "1.0.0",
+  "description": "CRU User Data Platform Pipeline (λ functions)",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/CruGlobal/cru-udp-pipeline"
+  },
+  "author": "Brian Zoetewey <brian.zoetewey@cru.org>",
+  "license": "MIT",
+  "private": true,
+  "engines": {
+    "node": "> 10.15.0"
+  },
+  "scripts": {
+    "lint": "standard || exit 0",
+    "lint:fix": "standard --fix || exit 0",
+    "test": "jest --forceExit --coverage"
+  },
+  "devDependencies": {
+    "@cruglobal/serverless-merge-config": "^1.1.0",
+    "dotenv": "^8.0.0",
+    "jest": "^24.8.0",
+    "serverless": "^1.44.1",
+    "standard": "^12.0.1"
+  },
+  "dependencies": {
+    "aws-sdk": "^2.470.0"
+  }
+}
