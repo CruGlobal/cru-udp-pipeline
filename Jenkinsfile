@@ -1,4 +1,7 @@
 #!groovy
-@Library('jenkins-jobs') _
+@Library('jenkins-jobs@add-cru-udp-pipeline-job') _
 
-serverlessPipeline()
+serverlessPipeline(
+  packageManager: 'yarn',
+  assumeRole: 'arn:aws:iam::699385956789:role/jenkinsInstanceRole'
+)

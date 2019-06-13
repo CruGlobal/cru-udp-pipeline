@@ -5,7 +5,6 @@ provider:
   runtime: nodejs10.x
   stage: production
   region: us-east-1
-  profile: snowplow
   environment: ${file(serverless/environment.js)}
   iamRoleStatements:
     - Effect: Allow
