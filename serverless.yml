@@ -1,4 +1,4 @@
-service: gma-service-api
+service: cru-udp-pipeline
 
 provider:
   name: aws
