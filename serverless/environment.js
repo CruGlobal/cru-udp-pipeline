@@ -5,7 +5,9 @@ module.exports = () => {
   require('dotenv').config()
   return {
     ENVIRONMENT: process.env['ENVIRONMENT'] || 'development',
-    SQS_CRU_EVENTS_ARN: process.env['SQS_CRU_EVENTS_ARN'] || '',
-    KINESIS_SNOWPLOW_ENRICH_ARN: process.env['KINESIS_SNOWPLOW_ENRICH_ARN'] || ''
+    ROLLBAR_ACCESS_TOKEN: process.env['ROLLBAR_ACCESS_TOKEN'] || '',
+    UDP_EVENTS_SQS_QUEUE_URL: process.env['UDP_EVENTS_SQS_QUEUE_URL'] || '',
+    UDP_EVENTS_SQS_QUEUE_ARN: process.env['UDP_EVENTS_SQS_QUEUE_ARN'] || '',
+    SNOWPLOW_KINESIS_ENRICH_ARN: process.env['SNOWPLOW_KINESIS_ENRICH_ARN'] || ''
   }
 }

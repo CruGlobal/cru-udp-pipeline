@@ -12,7 +12,7 @@ provider:
         - SQS:SendMessage
         - SQS:SendMessageBatch
       Resource:
-        - ${env:SQS_CRU_EVENTS_ARN}
+        - ${env:UDP_EVENTS_SQS_QUEUE_ARN}
   $<<: ${file(serverless/provider.js)}
 
 functions:
@@ -20,8 +20,8 @@ functions:
     handler: handlers/events.handler
     events:
       - stream:
-          arn: ${env:KINESIS_SNOWPLOW_ENRICH_ARN}
-          batchSize: 25
+          arn: ${env:SNOWPLOW_KINESIS_ENRICH_ARN}
+          batchSize: 10 # batchSize must be 10 as it's the max for SQS:SendMessageBatch
           startingPosition: LATEST
           enabled: false
 
