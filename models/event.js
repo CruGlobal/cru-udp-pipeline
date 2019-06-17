@@ -3,7 +3,6 @@
 const {
   isArray,
   isEmpty,
-  omitBy,
   startsWith
 } = require('lodash')
 const DerivedEvent = require('./derived-event')
@@ -41,17 +40,9 @@ class Event {
 
     // Set URI from assorted even fields
     this.uri = uriFromEvent(data)
-  }
 
-  toJSON () {
-    return omitBy({
-      event_id: this.event_id,
-      type: this.type,
-      collector_tstamp: this.collector_tstamp,
-      derived_tstamp: this.derived_tstamp,
-      web_id: this.web_id,
-      uri: this.uri
-    }, isEmpty)
+    // Set raw Base64 data
+    this.data = record.kinesis.data
   }
 }
 

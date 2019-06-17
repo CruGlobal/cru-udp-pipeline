@@ -27,7 +27,7 @@ module.exports.handler = rollbar.lambdaHandler((lambdaEvent, lambdaContext, lamb
       const sqs = new AWS.SQS({ apiVersion: '2012-11-05', region: 'us-east-1' })
       const entries = uniqBy(validEvents, 'event_id').map((event) => ({
         Id: event.event_id,
-        MessageBody: JSON.stringify(event.toJSON())
+        MessageBody: event.data
       }))
 
       sqs.sendMessageBatch({

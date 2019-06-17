@@ -16,7 +16,7 @@ provider:
   $<<: ${file(serverless/provider.js)}
 
 functions:
-  kinesis:
+  udp-events:
     handler: handlers/events.handler
     events:
       - stream:
