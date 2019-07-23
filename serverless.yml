@@ -18,6 +18,7 @@ provider:
 functions:
   udp-events:
     handler: handlers/events.handler
+    timeout: 30
     events:
       - stream:
           arn: ${env:SNOWPLOW_KINESIS_ENRICH_ARN}
