@@ -1,13 +1,13 @@
 'use strict'
 
-const {
+import {
   isArray,
   isEmpty,
   startsWith
-} = require('lodash')
-const DerivedEvent = require('./derived-event')
-const Url = require('url')
-const { transform } = require('snowplow-analytics-sdk')
+} from 'lodash'
+import DerivedEvent from './derived-event'
+import Url from 'url'
+import { transform } from 'snowplow-analytics-sdk'
 
 class Event {
   static get WEB_PAGE_CONTEXT () { return 'contexts_com_snowplowanalytics_snowplow_web_page_1' }
