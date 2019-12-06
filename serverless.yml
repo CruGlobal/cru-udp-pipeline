@@ -2,10 +2,16 @@ service: cru-udp-pipeline
 
 provider:
   name: aws
+  stage: ${env:ENVIRONMENT}
   runtime: nodejs10.x
-  stage: production
   region: us-east-1
-  environment: ${file(serverless/environment.js)}
+  stackTags:
+    Name: ${env:PROJECT_NAME}-${self:custom.environmentMap.${env:ENVIRONMENT}}
+    owner: udp-support@cru.org
+    application: ${env:PROJECT_NAME}
+    env: ${self:custom.environmentMap.${env:ENVIRONMENT}}
+    managed_by: serverless-framework
+    function: lambda
   iamRoleStatements:
     - Effect: Allow
       Action:
@@ -13,7 +19,7 @@ provider:
         - SQS:SendMessageBatch
       Resource:
         - ${env:UDP_EVENTS_SQS_QUEUE_ARN}
-  $<<: ${file(serverless/provider.js)}
+  environment: ${file(serverless/environment.js)}
 
 functions:
   udp-events:
@@ -35,4 +41,16 @@ package:
     - .deployment/**
 
 plugins:
-  - '@cruglobal/serverless-merge-config'
+  - serverless-webpack
+
+custom:
+  webpack:
+    webpackConfig: ./webpack.config.js
+    includeModules: true
+    packager: yarn
+    excludeFiles: '**/*.test.js'
+  environmentMap:
+    production: prod
+    staging: stage
+    development: dev
+    lab: lab
