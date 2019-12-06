@@ -56,7 +56,7 @@ function uriFromEvent (event) {
   if (isArray(event[Event.CONTENT_SCORING_CONTEXT])) {
     try {
       const contentScoring = event[Event.CONTENT_SCORING_CONTEXT][0]
-      const parsed = Url.parse(contentScoring.uri)
+      const parsed = Url.parse(contentScoring.uri) // eslint-disable-line
       format = {
         protocol: parsed.protocol,
         slashes: true,
@@ -84,7 +84,7 @@ function uriFromEvent (event) {
     }
   } else if (event.page_url) {
     try {
-      const parsed = Url.parse(event.page_url)
+      const parsed = Url.parse(event.page_url) // eslint-disable-line
       format = {
         protocol: parsed.protocol,
         slashes: true,

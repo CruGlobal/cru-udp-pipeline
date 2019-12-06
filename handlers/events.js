@@ -9,10 +9,10 @@ module.exports.handler = rollbar.lambdaHandler((lambdaEvent, lambdaContext, lamb
   const DerivedEvent = require('../models/derived-event')
 
   // Make sure we have event records
-  if (typeof lambdaEvent['Records'] !== 'undefined') {
+  if (typeof lambdaEvent.Records !== 'undefined') {
     const validEvents = []
     // Iterate over each record
-    lambdaEvent['Records'].forEach((record) => {
+    lambdaEvent.Records.forEach((record) => {
       try {
         // Build an event object from each record, catch any resulting errors (InvalidEventError)
         validEvents.push(new Event(record))
@@ -31,7 +31,7 @@ module.exports.handler = rollbar.lambdaHandler((lambdaEvent, lambdaContext, lamb
       }))
 
       sqs.sendMessageBatch({
-        QueueUrl: process.env['UDP_EVENTS_SQS_QUEUE_URL'],
+        QueueUrl: process.env.UDP_EVENTS_SQS_QUEUE_URL,
         Entries: entries
       }, (err, data) => {
         if (err) {
