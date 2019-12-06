@@ -5,7 +5,7 @@ import uniqBy from 'lodash/uniqBy'
 import DerivedEvent from '../models/derived-event'
 import Event from '../models/event'
 
-export const handler = rollbar.lambdaHandler((lambdaEvent, lambdaContext, lambdaCallback) => {
+export const handler = async (lambdaEvent) => {
   // Make sure we have event records
   if (typeof lambdaEvent.Records !== 'undefined') {
     const validEvents = []
@@ -35,12 +35,12 @@ export const handler = rollbar.lambdaHandler((lambdaEvent, lambdaContext, lambda
         if (err) {
           rollbar.error('sqs.sendMessageBatch() error', err)
         }
-        lambdaCallback(null, data)
+        return data
       })
     } else {
-      lambdaCallback(null, 'Nothing processed')
+      return 'Nothing processed'
     }
   } else {
-    lambdaCallback(null, 'Nothing processed')
+    return 'Nothing processed'
   }
-})
+}

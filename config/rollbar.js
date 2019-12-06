@@ -21,6 +21,5 @@ const rollbar = new Rollbar({
 })
 
 export default {
-  error: (...args) => new Promise(resolve => rollbar.error(...args, resolve)),
-  lambdaHandler: rollbar.lambdaHandler
+  error: (...args) => new Promise(resolve => rollbar.error(...args, resolve))
 }
