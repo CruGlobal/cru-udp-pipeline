@@ -174,4 +174,4 @@ class InvalidDerivedEventError extends Error {}
 
 DerivedEvent.InvalidDerivedEventError = InvalidDerivedEventError
 
-module.exports = DerivedEvent
+export default DerivedEvent

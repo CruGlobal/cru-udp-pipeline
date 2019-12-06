@@ -1,13 +1,11 @@
 'use strict'
+import rollbar from '../config/rollbar'
+import { SQS } from 'aws-sdk'
+import uniqBy from 'lodash/uniqBy'
+import DerivedEvent from '../models/derived-event'
+import Event from '../models/event'
 
-const rollbar = require('../config/rollbar')
-const AWS = require('aws-sdk')
-const { uniqBy } = require('lodash')
-
-module.exports.handler = rollbar.lambdaHandler((lambdaEvent, lambdaContext, lambdaCallback) => {
-  const Event = require('../models/event')
-  const DerivedEvent = require('../models/derived-event')
-
+export const handler = rollbar.lambdaHandler((lambdaEvent, lambdaContext, lambdaCallback) => {
   // Make sure we have event records
   if (typeof lambdaEvent.Records !== 'undefined') {
     const validEvents = []
@@ -24,7 +22,7 @@ module.exports.handler = rollbar.lambdaHandler((lambdaEvent, lambdaContext, lamb
     })
 
     if (validEvents.length > 0) {
-      const sqs = new AWS.SQS({ apiVersion: '2012-11-05', region: 'us-east-1' })
+      const sqs = new SQS({ apiVersion: '2012-11-05', region: 'us-east-1' })
       const entries = uniqBy(validEvents, 'event_id').map((event) => ({
         Id: event.event_id,
         MessageBody: event.data

@@ -111,4 +111,4 @@ class InvalidEventError extends Error {}
 
 Event.InvalidEventError = InvalidEventError
 
-module.exports = Event
+export default Event
