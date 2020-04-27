@@ -40,7 +40,7 @@ functions:
           arn: ${env:SNOWPLOW_KINESIS_ENRICH_ARN}
           batchSize: 10
           startingPosition: LATEST
-          enabled: true
+          enabled: false
 
 package:
   exclude:
