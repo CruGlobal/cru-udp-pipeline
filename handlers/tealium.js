@@ -29,7 +29,12 @@ export const handler = async (lambdaEvent) => {
       const requests = uniqBy(validEvents, 'event_id').map(event => retry(async bail => {
         return tealium('/event', new TealiumEvent(event).dataLayer)
       }, { retries: 3 }))
-      return Promise.all(requests)
+      try {
+        await Promise.all(requests)
+      } catch (e) {
+        throw new Error(`Error processing: ${JSON.stringify(e)}`)
+      }
+      return `Processed ${requests.length} events.`
     } else {
       return Promise.resolve('Nothing processed')
     }

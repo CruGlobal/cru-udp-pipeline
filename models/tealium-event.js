@@ -119,7 +119,7 @@ class TealiumEvent {
     return {
       tealium_account: 'udp',
       tealium_profile: 'main',
-      tealium_datasource: 'snowplow'
+      tealium_datasource: '95baw3'
     }
   }
 
