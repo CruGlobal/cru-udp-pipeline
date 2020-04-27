@@ -25,15 +25,15 @@ export const handler = async (lambdaEvent) => {
 
     if (validEvents.length > 0) {
       // POST uniquely valid events to Tealium event API
-      const tealium = bent('https://collect.tealiumiq.com/event', 'POST', '200')
+      const tealium = bent('https://collect.tealiumiq.com', 'POST')
       const requests = uniqBy(validEvents, 'event_id').map(event => retry(async bail => {
-        return tealium(new TealiumEvent(event).dataLayer)
+        return tealium('/event', new TealiumEvent(event).dataLayer)
       }, { retries: 3 }))
       return Promise.all(requests)
     } else {
-      return 'Nothing processed'
+      return Promise.resolve('Nothing processed')
     }
   } else {
-    return 'Nothing processed'
+    return Promise.resolve('Nothing processed')
   }
 }
