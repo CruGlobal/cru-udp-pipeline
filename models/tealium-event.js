@@ -1,4 +1,14 @@
-import { isNil, mapValues, omitBy } from 'lodash'
+import {
+  compact,
+  forEach,
+  head,
+  includes,
+  isNil,
+  map,
+  mapValues,
+  omitBy
+} from 'lodash'
+import Context from './context'
 
 const DataLayerMapping = {
   app_name: 'property_name',
@@ -6,7 +16,7 @@ const DataLayerMapping = {
   event_name: 'event',
   event_id: 'event_id',
   client_ip: 'user_ipaddress',
-  domain_userid: 'tealium_visitor_id',
+  tealium_visitor_id: 'domain_userid',
   site_region: 'geo_region',
   customer_country: 'geo_country',
   customer_city: 'geo_city',
@@ -32,6 +42,8 @@ const DataLayerMapping = {
   model_name: 'os_family',
   device: 'dvce_type'
 }
+const uuidFields = ['network_userid', 'sso_guid', 'gr_master_person_id']
+const uuidPattern = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i
 
 class TealiumEvent {
   constructor (event) {
@@ -42,17 +54,48 @@ class TealiumEvent {
   get dataLayer () {
     return omitBy({
       ...this.standardParameters,
+      ...this.identityParameters,
       ...mapValues(DataLayerMapping, (v, k) => {
         return this.event[v]
       })
     }, isNil)
   }
 
+  get identityParameters () {
+    const context = this.event.contexts
+    const identityParams = {}
+    if (context instanceof Context) {
+      if (context.hasSchema(Context.SCHEMA_MOBILE)) {
+        const data = context.dataFor(Context.SCHEMA_MOBILE)
+        // https://github.com/snowplow/iglu-central/blob/master/schemas/com.snowplowanalytics.snowplow/mobile_context/jsonschema/1-0-1
+        identityParams.device_idfa = head(compact(map(['androidIdfa', 'appleIdfa', 'appleIdfv', 'openIdfa'], field => {
+          return data[field]
+        })))
+      }
+
+      if (context.hasSchema(Context.SCHEMA_IDS)) {
+        const data = context.dataFor(Context.SCHEMA_IDS)
+        forEach(['sso_guid', 'gr_master_person_id', 'mcid'], field => {
+          if (typeof data[field] !== 'undefined' && data[field]) {
+            identityParams[field] = this.fieldValue(data[field], field)
+          }
+        })
+      }
+    }
+  }
+
+  fieldValue (value, field) {
+    if (includes(uuidFields, field)) {
+      return uuidPattern.test(value) ? value : /* istanbul ignore next */ undefined
+    }
+    return value
+  }
+
   get standardParameters () {
     return {
-      tealium_account: '',
-      tealium_profile: '',
-      tealium_datasource: ''
+      tealium_account: 'udp',
+      tealium_profile: 'main',
+      tealium_datasource: 'snowplow'
     }
   }
 }
