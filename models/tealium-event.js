@@ -12,6 +12,7 @@ import {
 import Context from './context'
 
 const DataLayerMapping = {
+  // Snowplow: Tealium
   property_name: 'app_name',
   platform: 'platform',
   event: 'event_name',
