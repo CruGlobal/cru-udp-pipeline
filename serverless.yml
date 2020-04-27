@@ -30,7 +30,17 @@ functions:
           arn: ${env:SNOWPLOW_KINESIS_ENRICH_ARN}
           batchSize: 10 # batchSize must be 10 as it's the max for SQS:SendMessageBatch
           startingPosition: LATEST
-          enabled: false
+          enabled: true
+
+  tealium:
+    handler: handlers/tealium.handler
+    timeout: 30
+    events:
+      - stream:
+          arn: ${env:SNOWPLOW_KINESIS_ENRICH_ARN}
+          batchSize: 10
+          startingPosition: LATEST
+          enabled: true
 
 package:
   exclude:
