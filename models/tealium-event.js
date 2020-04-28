@@ -17,7 +17,7 @@ const DataLayerMapping = {
   platform: 'platform',
   event: 'event_name',
   event_id: 'event_id',
-  user_ipaddress: 'Client IP',
+  user_ipaddress: 'client_ip',
   // domain_userid: 'tealium_visitor_id', // tealium_visitor_id is handled in the identity section
   network_userid: 'tealium_thirdparty_visitor_id',
   geo_country: 'geo_country',
