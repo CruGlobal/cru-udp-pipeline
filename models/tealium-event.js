@@ -2,14 +2,12 @@ import {
   compact,
   forEach,
   head,
-  includes,
+  includes, isArray,
   isNil,
   map,
-  mapValues,
   omitBy,
   transform
 } from 'lodash'
-import Context from './context'
 
 const DataLayerMapping = {
   // Snowplow: Tealium
@@ -76,6 +74,10 @@ const uuidFields = ['sso_guid', 'gr_master_person_id']
 const uuidPattern = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i
 
 class TealiumEvent {
+  static get MOBILE_CONTEXT () { return 'contexts_com_snowplowanalytics_snowplow_mobile_context_1' }
+
+  static get IDS_CONTEXT () { return 'contexts_org_cru_ids_1' }
+
   constructor (event) {
     this.event = event
     this.data = this.event.data
@@ -83,35 +85,34 @@ class TealiumEvent {
 
   get dataLayer () {
     return omitBy({
+      scored_uri: this.event.uri,
       ...this.standardParameters,
       ...this.identityParameters,
       ...transform(DataLayerMapping, (result, value, key) => {
         result[value] = this.event.data[key]
-      }, {}),
+      }, {})
     }, isNil)
   }
 
   get identityParameters () {
-    const context = this.event.contexts
     const identityParams = {}
-    if (context instanceof Context) {
-      if (context.hasSchema(Context.SCHEMA_MOBILE)) {
-        const data = context.dataFor(Context.SCHEMA_MOBILE)
-        // https://github.com/snowplow/iglu-central/blob/master/schemas/com.snowplowanalytics.snowplow/mobile_context/jsonschema/1-0-1
-        identityParams.device_idfa = head(compact(map(['androidIdfa', 'appleIdfa', 'appleIdfv', 'openIdfa'], field => {
-          return data[field]
-        })))
-      }
 
-      if (context.hasSchema(Context.SCHEMA_IDS)) {
-        const data = context.dataFor(Context.SCHEMA_IDS)
-        forEach(['sso_guid', 'gr_master_person_id', 'mcid'], field => {
-          if (typeof data[field] !== 'undefined' && data[field]) {
-            identityParams[field] = this.fieldValue(data[field], field)
-          }
-        })
-      }
+    if (isArray(this.event.data[TealiumEvent.MOBILE_CONTEXT])) {
+      const mobile = this.event.data[TealiumEvent.MOBILE_CONTEXT][0]
+      identityParams.device_idfa = head(compact(map(['androidIdfa', 'appleIdfa', 'appleIdfv', 'openIdfa'], field => {
+        return mobile[field]
+      })))
     }
+
+    if (isArray(this.event.data[TealiumEvent.IDS_CONTEXT])) {
+      const ids = this.event.data[TealiumEvent.IDS_CONTEXT][0]
+      forEach(['sso_guid', 'gr_master_person_id', 'mcid'], field => {
+        if (typeof ids[field] !== 'undefined' && ids[field]) {
+          identityParams[field] = this.fieldValue(ids[field], field)
+        }
+      })
+    }
+
     // Set tealium_visitor_id to the domain_userid or device_idfa, whichever is first present.
     identityParams.tealium_visitor_id = head(compact([this.event.data.domain_userid, identityParams.device_idfa]))
 
