@@ -56,7 +56,7 @@ const DataLayerMapping = {
   ti_category: 'product_category',
   ti_price: 'product_unit_price',
   ti_quantity: 'product_quantity',
-  useragent: 'user agent',
+  useragent: 'user_agent',
   br_name: 'br_name',
   br_family: 'br_family',
   br_version: 'br_version',
