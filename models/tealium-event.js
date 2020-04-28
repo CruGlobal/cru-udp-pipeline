@@ -27,10 +27,13 @@ const DataLayerMapping = {
   geo_latitude: 'geo_latitude',
   geo_longitude: 'geo_longitude',
   geo_region_name: 'geo_region_name',
-  page_url: 'Current URL',
-  page_title: 'Page Title',
-  page_referrer: 'Referring URL',
-  page_urlpath: 'Pathname',
+  page_url: 'dom.url',
+  page_urlhost: 'dom.domain',
+  page_title: 'dom.title',
+  page_referrer: 'dom.referrer',
+  page_urlpath: 'dom.pathname',
+  page_urlquery: 'dom.query_string',
+  page_urlfragment: 'dom.hash',
   mkt_medium: 'mkt_medium',
   mkt_source: 'mkt_source',
   mkt_term: 'mkt_term',
@@ -109,8 +112,8 @@ class TealiumEvent {
         })
       }
     }
-    // Set tealium_visitor_id to the domain_userid or device_idfa, whichever is first present.
-    identityParams.tealium_visitor_id = head(compact([this.event.data.domain_userid, identityParams.device_idfa]))
+    // Set tealium_firstparty_visitor_id to the domain_userid or device_idfa, whichever is first present.
+    identityParams.tealium_firstparty_visitor_id = head(compact([this.event.data.domain_userid, identityParams.device_idfa]))
 
     return identityParams
   }
