@@ -112,8 +112,8 @@ class TealiumEvent {
         })
       }
     }
-    // Set tealium_visitor_id to the domain_userid or device_idfa, whichever is first present.
-    identityParams.tealium_visitor_id = head(compact([this.event.data.domain_userid, identityParams.device_idfa]))
+    // Set tealium_firstparty_visitor_id to the domain_userid or device_idfa, whichever is first present.
+    identityParams.tealium_firstparty_visitor_id = head(compact([this.event.data.domain_userid, identityParams.device_idfa]))
 
     return identityParams
   }
