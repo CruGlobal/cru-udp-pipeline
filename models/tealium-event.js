@@ -75,6 +75,10 @@ const DataLayerMapping = {
   domain_sessionid: 'tealium_session_id',
   true_tstamp: 'tealium_timestamp_epoch'
 }
+const HeaderMapping = {
+  // snowplow: HTTP Header
+  useragent: 'User-Agent'
+}
 const uuidFields = ['sso_guid', 'gr_master_person_id']
 const uuidPattern = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i
 
@@ -107,6 +111,14 @@ class TealiumEvent {
         }
       }, {}),
       ...extra
+    }, isNil)
+  }
+
+  headers () {
+    return omitBy({
+      ...transform(HeaderMapping, (result, value, key) => {
+        result[value] = this.event.data[key]
+      }, {})
     }, isNil)
   }
 
