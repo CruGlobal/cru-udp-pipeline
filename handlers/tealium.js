@@ -6,6 +6,7 @@ import uniqBy from 'lodash/uniqBy'
 import bent from 'bent'
 import retry from 'async-retry'
 import TealiumEvent from '../models/tealium-event'
+import { stringify } from 'querystring'
 
 export const handler = async (lambdaEvent) => {
   // Make sure we have event records
@@ -24,10 +25,17 @@ export const handler = async (lambdaEvent) => {
     })
 
     if (validEvents.length > 0) {
-      // POST uniquely valid events to Tealium event API
-      const tealium = bent('https://collect.tealiumiq.com', 'POST')
+      // send uniquely valid events to Tealium event API
+      const tealiumGET = bent('https://collect-us-east-1.tealiumiq.com', 'GET')
+      // const tealiumPOST = bent('https://collect.tealiumiq.com', 'POST')
+      // const webhookGET = bent('https://webhook.site', 'GET', 200)
       const requests = uniqBy(validEvents, 'event_id').map(event => retry(async bail => {
-        return tealium('/event', new TealiumEvent(event).dataLayer)
+        const extraParams = {
+          // 'cp.trace_id': 'iNdLkvqJ'
+        }
+        const dataLayer = new TealiumEvent(event).dataLayer(TealiumEvent.GET, extraParams)
+        return tealiumGET(`/vdata/i.gif?${stringify(dataLayer)}`)
+        // const response = await webhookGET(`/6063fa3c-b827-493c-a66f-bfabb7c222f1?${stringify(dataLayer)}`)
       }, { retries: 3 }))
       try {
         await Promise.all(requests)

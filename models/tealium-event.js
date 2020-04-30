@@ -2,7 +2,8 @@ import {
   compact,
   forEach,
   head,
-  includes, isArray,
+  includes,
+  isArray,
   isNil,
   map,
   omitBy,
@@ -10,13 +11,14 @@ import {
 } from 'lodash'
 
 const DataLayerMapping = {
-  // Snowplow: Tealium
+  // snowplow: tealium
+  // OR
+  // snowplow: [Tealium::POST, Tealium::GET]
   property_name: 'app_name',
   platform: 'platform',
   event: 'event_name',
   event_id: 'event_id',
   user_ipaddress: 'client_ip',
-  // domain_userid: 'tealium_visitor_id', // tealium_visitor_id is handled in the identity section
   network_userid: 'tealium_thirdparty_visitor_id',
   geo_country: 'geo_country',
   geo_region: 'geo_region',
@@ -25,13 +27,13 @@ const DataLayerMapping = {
   geo_latitude: 'geo_latitude',
   geo_longitude: 'geo_longitude',
   geo_region_name: 'geo_region_name',
-  page_url: 'page_url',
-  page_urlhost: 'page_urlhost',
-  page_title: 'page_title',
-  page_referrer: 'page_referrer',
-  page_urlpath: 'page_urlpath',
-  page_urlquery: 'page_urlquery',
-  page_urlfragment: 'page_urlfragment',
+  page_url: ['page_url', 'dom.url'],
+  page_urlhost: ['page_urlhost', 'dom.domain'],
+  page_title: ['page_title', 'dom.title'],
+  page_referrer: ['page_referrer', 'dom.referrer'],
+  page_urlpath: ['page_urlpath', 'dom.pathname'],
+  page_urlquery: ['page_urlquery', 'dom.query_string'],
+  page_urlfragment: ['page_urlfragment', 'dom.hash'],
   mkt_medium: 'mkt_medium',
   mkt_source: 'mkt_source',
   mkt_term: 'mkt_term',
@@ -60,6 +62,8 @@ const DataLayerMapping = {
   br_version: 'br_version',
   br_type: 'br_type',
   br_lang: 'br_lang',
+  br_viewheight: [undefined, 'dom.viewport_height'],
+  br_viewwidth: [undefined, 'dom.viewport_width'],
   os_name: 'os_name',
   os_family: 'os_family',
   os_manufacturer: 'os_manufacturer',
@@ -67,6 +71,7 @@ const DataLayerMapping = {
   dvce_type: 'device',
   dvce_ismobile: 'dvce_ismobile',
   geo_timezone: 'geo_timezone',
+  domain_sessionidx: 'tealium_session_number',
   domain_sessionid: 'tealium_session_id',
   true_tstamp: 'tealium_timestamp_epoch'
 }
@@ -78,19 +83,30 @@ class TealiumEvent {
 
   static get IDS_CONTEXT () { return 'contexts_org_cru_ids_1' }
 
+  static get POST () { return 0 }
+
+  static get GET () { return 1 }
+
   constructor (event) {
     this.event = event
     this.data = this.event.data
   }
 
-  get dataLayer () {
+  dataLayer (type = TealiumEvent.POST, extra = {}) {
     return omitBy({
       scored_uri: this.event.uri,
       ...this.standardParameters,
       ...this.identityParameters,
       ...transform(DataLayerMapping, (result, value, key) => {
-        result[value] = this.event.data[key]
-      }, {})
+        if (isArray(value)) {
+          if (typeof value[type] !== 'undefined') {
+            result[value[type]] = this.event.data[key]
+          }
+        } else {
+          result[value] = this.event.data[key]
+        }
+      }, {}),
+      ...extra
     }, isNil)
   }
 
@@ -115,6 +131,7 @@ class TealiumEvent {
 
     // Set tealium_visitor_id to the domain_userid or device_idfa, whichever is first present.
     identityParams.tealium_visitor_id = head(compact([this.event.data.domain_userid, identityParams.device_idfa]))
+    identityParams.tealium_vid = identityParams.tealium_visitor_id
 
     return identityParams
   }

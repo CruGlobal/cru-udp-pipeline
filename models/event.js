@@ -47,15 +47,15 @@ class Event {
 }
 
 /**
- * @param {Event} event
+ * @param {object} data
  * @returns {String|NULL}
  */
-function uriFromEvent (event) {
+function uriFromEvent (data) {
   let format
   // Use content-scoring.uri if present
-  if (isArray(event[Event.CONTENT_SCORING_CONTEXT])) {
+  if (isArray(data[Event.CONTENT_SCORING_CONTEXT])) {
     try {
-      const contentScoring = event[Event.CONTENT_SCORING_CONTEXT][0]
+      const contentScoring = data[Event.CONTENT_SCORING_CONTEXT][0]
       const parsed = Url.parse(contentScoring.uri) // eslint-disable-line
       format = {
         protocol: parsed.protocol,
@@ -68,23 +68,23 @@ function uriFromEvent (event) {
       /* istanbul ignore next */
       return null
     }
-  } else if (event.platform === 'mob') {
+  } else if (data.platform === 'mob') {
     // Fallback for mobile apps that don't use the content-scoring context
     let pathname = ''
     /* istanbul ignore else */
-    if (isArray(event[Event.SCREEN_VIEW_CONTEXT])) {
-      const data = event[Event.SCREEN_VIEW_CONTEXT][0]
-      pathname = data.name.replace(/[^a-zA-Z0-9-_]/g, '')
+    if (isArray(data[Event.SCREEN_VIEW_CONTEXT])) {
+      const screenView = data[Event.SCREEN_VIEW_CONTEXT][0]
+      pathname = screenView.name.replace(/[^a-zA-Z0-9-_]/g, '')
     }
     format = {
-      protocol: event.app_id,
+      protocol: data.app_id,
       slashes: true,
-      hostname: event.event_name,
+      hostname: data.event_name,
       pathname: pathname
     }
-  } else if (event.page_url) {
+  } else if (data.page_url) {
     try {
-      const parsed = Url.parse(event.page_url) // eslint-disable-line
+      const parsed = Url.parse(data.page_url) // eslint-disable-line
       format = {
         protocol: parsed.protocol,
         slashes: true,

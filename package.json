@@ -32,6 +32,7 @@
     "bent": "^7.3.0",
     "lodash": "^4.17.11",
     "promise-retry": "^1.1.1",
+    "querystring": "^0.2.0",
     "rollbar": "^2.7.1",
     "snowplow-analytics-sdk": "^0.1.0",
     "source-map-support": "^0.5.13",
