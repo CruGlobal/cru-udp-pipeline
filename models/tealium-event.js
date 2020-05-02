@@ -12,14 +12,13 @@ import {
 
 const DataLayerMapping = {
   // snowplow: tealium
-  // OR
-  // snowplow: [Tealium::POST, Tealium::GET]
+  // The tealium side of the mapping can be multiple attributes in tealium that will
+  // be set to the same value
   property_name: 'app_name',
   platform: 'platform',
   event: 'event_name',
   event_id: 'event_id',
   user_ipaddress: 'client_ip',
-  network_userid: 'tealium_thirdparty_visitor_id',
   geo_country: 'geo_country',
   geo_region: 'geo_region',
   geo_city: 'geo_city',
@@ -87,25 +86,21 @@ class TealiumEvent {
 
   static get IDS_CONTEXT () { return 'contexts_org_cru_ids_1' }
 
-  static get POST () { return 0 }
-
-  static get GET () { return 1 }
-
   constructor (event) {
     this.event = event
     this.data = this.event.data
   }
 
-  dataLayer (type = TealiumEvent.POST, extra = {}) {
+  dataLayer (extra = {}) {
     return omitBy({
       scored_uri: this.event.uri,
       ...this.standardParameters,
       ...this.identityParameters,
       ...transform(DataLayerMapping, (result, value, key) => {
         if (isArray(value)) {
-          if (typeof value[type] !== 'undefined') {
-            result[value[type]] = this.event.data[key]
-          }
+          value.forEach(tealium_key => {
+            result[tealium_key] = this.event.data[key]
+          })
         } else {
           result[value] = this.event.data[key]
         }
@@ -114,12 +109,17 @@ class TealiumEvent {
     }, isNil)
   }
 
-  headers () {
+  headers (extra = {}) {
     return omitBy({
       ...transform(HeaderMapping, (result, value, key) => {
         result[value] = this.event.data[key]
-      }, {})
+      }, {}),
+      ...extra
     }, isNil)
+  }
+
+  cookies () {
+    return `TAPID=udp/main>${this.event.data['network_userid']}|`
   }
 
   get identityParameters () {

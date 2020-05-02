@@ -26,16 +26,16 @@ export const handler = async (lambdaEvent) => {
 
     if (validEvents.length > 0) {
       // send uniquely valid events to Tealium event API
-      const tealiumGET = bent('https://collect-us-east-1.tealiumiq.com', 'GET')
+      const tealiumPOST = bent('https://collect.tealiumiq.com', 'POST')
       const requests = uniqBy(validEvents, 'event_id').map(event => retry(async bail => {
         const extraParams = {
-          // 'cp.trace_id': 'iNdLkvqJ'
+          // 'cp.trace_id': 'nrsSenhu'
         }
         const tealium = new TealiumEvent(event)
-        return tealiumGET(
-          `/vdata/i.gif?${stringify(tealium.dataLayer(TealiumEvent.GET, extraParams))}`,
-          undefined,
-          tealium.headers()
+        return tealiumPOST(
+          `/udp/main/2/i.gif`,
+            {data: tealium.dataLayer(extraParams)},
+          tealium.headers({'Cookie': tealium.cookies()})
         )
       }, { retries: 3 }))
       try {
