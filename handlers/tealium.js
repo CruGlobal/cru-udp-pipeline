@@ -12,7 +12,9 @@ import { stringify } from 'querystring'
 const {forEach, chunk} = require('lodash')
 
 export const handler = async (lambdaEvent) => {
-  forEach(chunk(lambdaEvent['Records'], 25), records => logger.info(JSON.stringify(records)))  // Make sure we have event records
+  // Debug
+  // forEach(chunk(lambdaEvent['Records'], 25), records => logger.info(JSON.stringify(records)))  // Make sure we have event records
+  
   if (typeof lambdaEvent.Records !== 'undefined') {
     const validEvents = []
     // Iterate over each record
@@ -41,11 +43,11 @@ export const handler = async (lambdaEvent) => {
           tealium.headers({'Cookie': tealium.cookies()})
         )
       }, { retries: 3 }))
-      try {
+      // try {
         await Promise.all(requests)
-      } catch (e) {
-        throw new Error(`Error processing: ${JSON.stringify(e)}`)
-      }
+      // } catch (e) {
+      //   throw new Error(`Error processing: ${JSON.stringify(e)}`)
+      // }
       return `Processed ${requests.length} events.`
     } else {
       return Promise.resolve('Nothing processed')

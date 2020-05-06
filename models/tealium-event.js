@@ -81,6 +81,8 @@ const HeaderMapping = {
 const uuidFields = ['sso_guid', 'gr_master_person_id']
 const uuidPattern = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i
 
+const punycode = require('punycode')
+
 class TealiumEvent {
   static get MOBILE_CONTEXT () { return 'contexts_com_snowplowanalytics_snowplow_mobile_context_1' }
 
@@ -112,7 +114,7 @@ class TealiumEvent {
   headers (extra = {}) {
     return omitBy({
       ...transform(HeaderMapping, (result, value, key) => {
-        result[value] = this.event.data[key]
+        result[value] = punycode.toASCII(this.event.data[key])
       }, {}),
       ...extra
     }, isNil)
