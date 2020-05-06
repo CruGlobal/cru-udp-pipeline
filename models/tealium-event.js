@@ -7,7 +7,8 @@ import {
   isNil,
   map,
   omitBy,
-  transform
+  transform,
+  mapValues
 } from 'lodash'
 
 const DataLayerMapping = {
@@ -112,14 +113,12 @@ class TealiumEvent {
   }
 
   headers (extra = {}) {
-    return omitBy({
+    return mapValues(omitBy({
       ...transform(HeaderMapping, (result, value, key) => {
-        if (typeof this.event.data[key] === "string") {
-          result[value] = punycode.toASCII(this.event.data[key])
-        }
+        result[value] = this.event.data[key]
       }, {}),
       ...extra
-    }, isNil)
+    }, isNil), value => punycode.toASCII(value))
   }
 
   cookies () {
