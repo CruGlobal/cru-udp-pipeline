@@ -8,6 +8,8 @@ import retry from 'async-retry'
 import TealiumEvent from '../models/tealium-event'
 import { stringify } from 'querystring'
 
+const {forEach, chunk} = require('lodash')
+
 export const handler = async (lambdaEvent) => {
   forEach(chunk(lambdaEvent['Records'], 25), records => logger.info(JSON.stringify(records)))  // Make sure we have event records
   if (typeof lambdaEvent.Records !== 'undefined') {
