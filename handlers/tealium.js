@@ -1,5 +1,6 @@
 'use strict'
 import rollbar from '../config/rollbar'
+const logger = require('../config/logger')
 import DerivedEvent from '../models/derived-event'
 import Event from '../models/event'
 import uniqBy from 'lodash/uniqBy'

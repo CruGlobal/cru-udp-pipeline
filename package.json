@@ -36,6 +36,7 @@
     "rollbar": "^2.7.1",
     "snowplow-analytics-sdk": "^0.1.0",
     "source-map-support": "^0.5.13",
+    "winston": "^2.4.4",
     "url": "^0.11.0"
   }
 }
