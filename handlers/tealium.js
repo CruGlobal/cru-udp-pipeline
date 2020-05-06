@@ -1,21 +1,18 @@
 'use strict'
 import rollbar from '../config/rollbar'
-const logger = require('../config/logger')
+
 import DerivedEvent from '../models/derived-event'
 import Event from '../models/event'
 import uniqBy from 'lodash/uniqBy'
 import bent from 'bent'
 import retry from 'async-retry'
 import TealiumEvent from '../models/tealium-event'
-import { stringify } from 'querystring'
-
-const {forEach, chunk} = require('lodash')
 
 export const handler = async (lambdaEvent) => {
-  // Debug
-  // forEach(chunk(lambdaEvent['Records'], 25), records => logger.info(JSON.stringify(records)))  // Make sure we have event records
-  
   if (typeof lambdaEvent.Records !== 'undefined') {
+    // Debug
+    // console.log(JSON.stringify(lambdaEvent.Records))
+
     const validEvents = []
     // Iterate over each record
     lambdaEvent.Records.forEach((record) => {
@@ -30,25 +27,26 @@ export const handler = async (lambdaEvent) => {
     })
 
     if (validEvents.length > 0) {
-      // send uniquely valid events to Tealium event API
-      const tealiumPOST = bent('https://collect.tealiumiq.com', 'POST')
-      const requests = uniqBy(validEvents, 'event_id').map(event => retry(async bail => {
-        const extraParams = {
-          // 'cp.trace_id': 'nrsSenhu'
-        }
-        const tealium = new TealiumEvent(event)
-        return tealiumPOST(
-          `/udp/main/2/i.gif`,
-            {data: tealium.dataLayer(extraParams)},
-          tealium.headers({'Cookie': tealium.cookies()})
-        )
-      }, { retries: 3 }))
-      // try {
+      try {
+        // send uniquely valid events to Tealium event API
+        const tealiumPOST = bent('https://collect.tealiumiq.com', 'POST')
+        const requests = uniqBy(validEvents, 'event_id').map(event => retry(async bail => {
+          const extraParams = {
+            // 'cp.trace_id': 'nrsSenhu'
+          }
+          const tealium = new TealiumEvent(event)
+          return tealiumPOST(
+            '/udp/main/2/i.gif',
+            { data: tealium.dataLayer(extraParams) },
+            tealium.headers({ Cookie: tealium.cookies() })
+          )
+        }, { retries: 3 }))
         await Promise.all(requests)
-      // } catch (e) {
-      //   throw new Error(`Error processing: ${JSON.stringify(e)}`)
-      // }
-      return `Processed ${requests.length} events.`
+        return `Processed ${requests.length} events.`
+      } catch (error) {
+        await rollbar.error('Error sending event to Tealium', error)
+        return Promise.reject(error)
+      }
     } else {
       return Promise.resolve('Nothing processed')
     }
