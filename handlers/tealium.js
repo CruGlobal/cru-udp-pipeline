@@ -9,8 +9,7 @@ import TealiumEvent from '../models/tealium-event'
 import { stringify } from 'querystring'
 
 export const handler = async (lambdaEvent) => {
-  console.log(JSON.stringify(lambdaEvent))
-  // Make sure we have event records
+  forEach(chunk(lambdaEvent['Records'], 25), records => logger.info(JSON.stringify(records)))  // Make sure we have event records
   if (typeof lambdaEvent.Records !== 'undefined') {
     const validEvents = []
     // Iterate over each record
