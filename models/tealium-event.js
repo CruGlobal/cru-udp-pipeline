@@ -114,7 +114,9 @@ class TealiumEvent {
   headers (extra = {}) {
     return omitBy({
       ...transform(HeaderMapping, (result, value, key) => {
-        result[value] = punycode.toASCII(this.event.data[key])
+        if (typeof this.event.data[key] === "string") {
+          result[value] = punycode.toASCII(this.event.data[key])
+        }
       }, {}),
       ...extra
     }, isNil)
