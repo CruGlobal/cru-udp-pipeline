@@ -8,8 +8,11 @@ import {
   map,
   omitBy,
   transform,
-  mapValues
+  mapValues,
+  isString
 } from 'lodash'
+
+import punycode from 'punycode'
 
 const DataLayerMapping = {
   // snowplow: tealium
@@ -73,7 +76,7 @@ const DataLayerMapping = {
   geo_timezone: 'geo_timezone',
   domain_sessionidx: 'tealium_session_number',
   domain_sessionid: 'tealium_session_id',
-  true_tstamp: 'tealium_timestamp_epoch'
+  collector_tstamp: ['tealium_timestamp_utc', 'tealium_timestamp_epoch']
 }
 const HeaderMapping = {
   // snowplow: HTTP Header
@@ -81,8 +84,6 @@ const HeaderMapping = {
 }
 const uuidFields = ['sso_guid', 'gr_master_person_id']
 const uuidPattern = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i
-
-const punycode = require('punycode')
 
 class TealiumEvent {
   static get MOBILE_CONTEXT () { return 'contexts_com_snowplowanalytics_snowplow_mobile_context_1' }
@@ -102,10 +103,10 @@ class TealiumEvent {
       ...transform(DataLayerMapping, (result, value, key) => {
         if (isArray(value)) {
           value.forEach(tealium_key => {
-            result[tealium_key] = this.event.data[key]
+            result[tealium_key] = this.fieldValue(this.event.data[key], tealium_key)
           })
         } else {
-          result[value] = this.event.data[key]
+          result[value] = this.fieldValue(this.event.data[key], value)
         }
       }, {}),
       ...extra
@@ -161,7 +162,10 @@ class TealiumEvent {
 
   fieldValue (value, field) {
     if (includes(uuidFields, field)) {
-      return uuidPattern.test(value) ? value : /* istanbul ignore next */ undefined
+      return uuidPattern.test(value) ? value : undefined
+    }
+    if (field === 'tealium_timestamp_epoch' && isString(value)) {
+      return Date.parse(value)
     }
     return value
   }
