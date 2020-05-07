@@ -18,7 +18,7 @@ const DataLayerMapping = {
   // snowplow: tealium
   // The tealium side of the mapping can be multiple attributes in tealium that will
   // be set to the same value
-  property_name: 'app_name',
+  app_id: 'app_name',
   platform: 'platform',
   event: 'event_name',
   event_id: 'event_id',
