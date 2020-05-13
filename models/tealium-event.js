@@ -119,7 +119,7 @@ class TealiumEvent {
         result[value] = this.event.data[key]
       }, {}),
       ...extra
-    }, isNil), value => punycode.toASCII(value))
+    }, isNil), value => punycode.encode(value))
   }
 
   cookies () {
