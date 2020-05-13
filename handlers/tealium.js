@@ -11,7 +11,7 @@ import TealiumEvent from '../models/tealium-event'
 export const handler = async (lambdaEvent) => {
   if (typeof lambdaEvent.Records !== 'undefined') {
     // Debug
-    // console.log(JSON.stringify(lambdaEvent.Records))
+    console.log(JSON.stringify(lambdaEvent.Records))
 
     const validEvents = []
     // Iterate over each record
