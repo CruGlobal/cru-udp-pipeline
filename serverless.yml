@@ -1,57 +1,24 @@
 service: cru-udp-pipeline
 
 provider:
-  name: aws
-  stage: ${env:ENVIRONMENT}
-  runtime: nodejs10.x
-  region: us-east-1
-  stackTags:
-    Name: ${env:PROJECT_NAME}-${self:custom.environmentMap.${env:ENVIRONMENT}}
-    owner: udp-support@cru.org
-    application: ${env:PROJECT_NAME}
-    env: ${self:custom.environmentMap.${env:ENVIRONMENT}}
-    managed_by: serverless-framework
-    function: lambda
-  iamRoleStatements:
-    - Effect: Allow
-      Action:
-        - SQS:SendMessage
-        - SQS:SendMessageBatch
-      Resource:
-        - ${env:UDP_EVENTS_SQS_QUEUE_ARN}
+  name: google
+  runtime: nodejs10
+  project: cru-snowplow-prod-1
+  region: us-east4
+  credentials: ./keyfile.json
   environment: ${file(serverless/environment.js)}
-
-functions:
-  udp-events:
-    handler: handlers/events.handler
-    timeout: 30
-    events:
-      - stream:
-          arn: ${env:SNOWPLOW_KINESIS_ENRICH_ARN}
-          batchSize: 10 # batchSize must be 10 as it's the max for SQS:SendMessageBatch
-          startingPosition: LATEST
-          enabled: true
-
-  tealium:
-    handler: handlers/tealium.handler
-    timeout: 30
-    events:
-      - stream:
-          arn: ${env:SNOWPLOW_KINESIS_ENRICH_ARN}
-          batchSize: 10
-          startingPosition: LATEST
-          enabled: false
-
-package:
-  exclude:
-    - .git/**
-    - test/**
-    - '**/*.test.js'
-    - '**/*.sql'
-    - .deployment/**
 
 plugins:
   - serverless-webpack
+  - serverless-google-cloudfunctions
+
+functions:
+  tealium:
+    handler: tealium
+    events:
+      - event:
+          eventType: providers/cloud.pubsub/eventTypes/topic.publish
+          resource: projects/cru-snowplow-prod-1/topics/sp-rt-pipeline-good-prod1
 
 custom:
   webpack:
@@ -59,8 +26,3 @@ custom:
     includeModules: true
     packager: yarn
     excludeFiles: '**/*.test.js'
-  environmentMap:
-    production: prod
-    staging: stage
-    development: dev
-    lab: lab
