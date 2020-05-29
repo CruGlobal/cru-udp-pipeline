@@ -15,10 +15,10 @@ plugins:
 functions:
   tealium:
     handler: tealium
-    events:
-      - event:
-          eventType: providers/cloud.pubsub/eventTypes/topic.publish
-          resource: projects/cru-snowplow-prod-1/topics/sp-rt-pipeline-good-prod1
+#    events:
+#      - event:
+#          eventType: providers/cloud.pubsub/eventTypes/topic.publish
+#          resource: projects/cru-snowplow-prod-1/topics/sp-rt-pipeline-good-prod1
 
 custom:
   webpack:
