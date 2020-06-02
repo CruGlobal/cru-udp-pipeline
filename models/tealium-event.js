@@ -144,7 +144,7 @@ class TealiumEvent {
 
     if (isArray(this.event.data[TealiumEvent.IDS_CONTEXT])) {
       const ids = this.event.data[TealiumEvent.IDS_CONTEXT][0]
-      forEach(['sso_guid', 'gr_master_person_id', 'mcid', 'google_clientId'], field => {
+      forEach(['sso_guid', 'gr_master_person_id', 'mcid', 'google_clientId', 'tealium_trace_id'], field => {
         if (typeof ids[field] !== 'undefined' && ids[field]) {
           identityParams[field] = this.fieldValue(ids[field], field)
         }
