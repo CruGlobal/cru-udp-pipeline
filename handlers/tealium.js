@@ -30,13 +30,15 @@ export const handler = async (lambdaEvent) => {
       try {
         // send uniquely valid events to Tealium event API
         const tealiumPOST = bent('https://collect.tealiumiq.com', 'POST')
+        // const tealiumPOST = bent('https://webhook.site', 'POST')
         const requests = uniqBy(validEvents, 'event_id').map(event => retry(async bail => {
-          const extraParams = {
-            // 'cp.trace_id': 'nrsSenhu'
-          }
           const tealium = new TealiumEvent(event)
+          const extraParams = {
+            'cp.trace_id': tealium.dataLayer()['tealium_trace_id']
+          }
           return tealiumPOST(
             '/udp/main/2/i.gif',
+            // '/6063fa3c-b827-493c-a66f-bfabb7c222f1',
             { data: tealium.dataLayer(extraParams) },
             tealium.headers({ Cookie: tealium.cookies() })
           )
