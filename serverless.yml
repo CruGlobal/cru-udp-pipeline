@@ -10,15 +10,23 @@ provider:
 
 plugins:
   - serverless-webpack
-  - serverless-google-cloudfunctions
+  - serverless-google-cloudfunctions-amazing
 
 functions:
-  tealium:
-    handler: tealium
+#  tealium:
+#    handler: tealium
 #    events:
 #      - event:
 #          eventType: providers/cloud.pubsub/eventTypes/topic.publish
-#          resource: projects/cru-snowplow-prod-1/topics/sp-rt-pipeline-good-prod1
+#          resource: ${env:SNOWPLOW_PIPELINE_TOPIC}
+
+  audience:
+    handler: audience
+    serviceAccount: ${env:FUNCTION_SERVICE_ACCOUNT}
+    events:
+      - event:
+          eventType: providers/cloud.pubsub/eventTypes/topic.publish
+          resource: ${env:TEALIUM_AUDIENCE_TOPIC}
 
 custom:
   webpack:
