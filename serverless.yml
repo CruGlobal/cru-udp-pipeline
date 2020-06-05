@@ -13,12 +13,13 @@ plugins:
   - serverless-google-cloudfunctions-amazing
 
 functions:
-#  tealium:
-#    handler: tealium
-#    events:
-#      - event:
-#          eventType: providers/cloud.pubsub/eventTypes/topic.publish
-#          resource: ${env:SNOWPLOW_PIPELINE_TOPIC}
+  tealium:
+    handler: tealium
+    serviceAccount: ${env:FUNCTION_SERVICE_ACCOUNT}
+    events:
+      - event:
+          eventType: providers/cloud.pubsub/eventTypes/topic.publish
+          resource: ${env:SNOWPLOW_PIPELINE_TOPIC}
 
   audience:
     handler: audience
