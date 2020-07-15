@@ -8,6 +8,7 @@ module.exports = () => {
     ROLLBAR_ACCESS_TOKEN: process.env.ROLLBAR_ACCESS_TOKEN || '',
     UDP_EVENTS_SQS_QUEUE_URL: process.env.UDP_EVENTS_SQS_QUEUE_URL || '',
     UDP_EVENTS_SQS_QUEUE_ARN: process.env.UDP_EVENTS_SQS_QUEUE_ARN || '',
-    SNOWPLOW_KINESIS_ENRICH_ARN: process.env.SNOWPLOW_KINESIS_ENRICH_ARN || ''
+    SNOWPLOW_KINESIS_ENRICH_ARN: process.env.SNOWPLOW_KINESIS_ENRICH_ARN || '',
+    LOG_LEVEL: process.env.LOG_LEVEL || 'error'
   }
 }
