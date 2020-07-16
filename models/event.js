@@ -27,8 +27,8 @@ class Event {
     this.event_id = data.event_id
     this.type = data.event_name
 
-    if (process.env.LOG_LEVEL === 'debug' && this.data.event_type === 'struct') {
-      console.log(this.event_id, JSON.stringify(this.data))
+    if (process.env.LOG_LEVEL === 'debug' && data.event_type === 'struct') {
+      console.log(this.event_id, JSON.stringify(data))
     }
 
     // Will throw errors if event is not a valid DerivedEvent
