@@ -34,10 +34,6 @@ export const handler = async (lambdaEvent) => {
         const tealiumPOST = bent('https://collect.tealiumiq.com', 'POST')
         // const tealiumPOST = bent('https://webhook.site', 'POST')
         const requests = uniqBy(validEvents, 'event_id').map(event => retry(async bail => {
-          if (process.env.LOG_LEVEL === 'debug') {
-            console.log(event.event_id, JSON.stringify(event.data))
-          }
-
           const tealium = new TealiumEvent(event)
           const extraParams = {
             'cp.trace_id': tealium.dataLayer()['tealium_trace_id']
