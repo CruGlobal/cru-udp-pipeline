@@ -27,7 +27,7 @@ class Event {
     this.event_id = data.event_id
     this.type = data.event_name
 
-    if (process.env.LOG_LEVEL === 'debug' && data.event_type === 'struct') {
+    if (process.env.LOG_LEVEL === 'debug' && data.event === 'struct') {
       console.log(this.event_id, JSON.stringify(data))
     }
 
