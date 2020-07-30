@@ -27,10 +27,6 @@ class Event {
     this.event_id = data.event_id
     this.type = data.event_name
 
-    if (process.env.LOG_LEVEL === 'debug' && data.event === 'struct') {
-      console.log(this.event_id, JSON.stringify(data))
-    }
-
     // Will throw errors if event is not a valid DerivedEvent
     DerivedEvent.ensureValid(data)
 
@@ -41,6 +37,10 @@ class Event {
 
     // Set URI from assorted even fields
     this.uri = uriFromEvent(data)
+
+    if (process.env.LOG_LEVEL === 'debug' && startsWith(this.uri || '', 'campaign://')) {
+      console.log(this.event_id, JSON.stringify(data))
+    }
 
     // Set data
     this.data = data
