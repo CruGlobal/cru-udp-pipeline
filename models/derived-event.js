@@ -77,6 +77,10 @@ const DevTestPattern = new RegExp('(' + [
   'porn'
 ].join('|') + ')')
 
+const GoodAppIds = [
+  'adobecampaign'
+]
+
 const BadHostnames = [
   ' goodinfotv.ru',
   '0s.o53xo.nvuxe43uovsgk3tun53c4y3pnu.cmle.ru',
@@ -157,7 +161,10 @@ class DerivedEvent {
     // Check if event had a Test, Development or Bad app_id and ignore it
     if (isEmpty(event.app_id) || event.app_id === '-web' ||
       (typeof event.app_id === 'string' && event.app_id.match(DevTestPattern) !== null)) {
-      throw new InvalidDerivedEventError(`Event (${event.event_id}) has a bad app_id (${event.app_id}).`)
+      // It's a bad app_id, but maybe not, lets check for exceptions
+      if (indexOf(GoodAppIds, event.app_id) === -1) {
+        throw new InvalidDerivedEventError(`Event (${event.event_id}) has a bad app_id (${event.app_id}).`)
+      }
     }
 
     // Check if event had a Test, Development or Bad page_urlhost and ignore it

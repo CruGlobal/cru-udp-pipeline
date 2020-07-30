@@ -26,6 +26,10 @@ export const handler = async (lambdaEvent) => {
         if (process.env.LOG_LEVEL === 'debug' || !(error instanceof DerivedEvent.InvalidDerivedEventError)) {
           rollbar.error('Event.fromRecord(record) error', error, { record: record })
         }
+
+        if (process.env.LOG_LEVEL === 'debug') {
+          console.log('DerivedEvent Error: ', error.toString())
+        }
       }
     })
 
@@ -39,7 +43,7 @@ export const handler = async (lambdaEvent) => {
           const extraParams = {
             'cp.trace_id': tealium.dataLayer()['tealium_trace_id']
           }
-          if (startsWith(event.uri, 'campaign://')) {
+          if (event.app_id === 'adobecampaign') {
             extraParams['cp.trace_id'] = 'MULvuyum'
           }
           return tealiumPOST(

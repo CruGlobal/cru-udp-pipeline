@@ -38,8 +38,8 @@ class Event {
     // Set URI from assorted even fields
     this.uri = uriFromEvent(data)
 
-    if (process.env.LOG_LEVEL === 'debug' && startsWith(this.uri || '', 'campaign://')) {
-      console.log(this.event_id, JSON.stringify(data))
+    if (process.env.LOG_LEVEL === 'debug') {
+      console.log(record.eventID, this.event_id, this.uri)
     }
 
     // Set data
