@@ -21,6 +21,14 @@ functions:
           eventType: providers/cloud.pubsub/eventTypes/topic.publish
           resource: ${env:SNOWPLOW_PIPELINE_TOPIC}
 
+  audience:
+    handler: audience
+    serviceAccount: ${env:FUNCTION_SERVICE_ACCOUNT}
+    events:
+      - event:
+          eventType: providers/cloud.pubsub/eventTypes/topic.publish
+          resource: ${env:TEALIUM_AUDIENCE_TOPIC}
+
 custom:
   webpack:
     webpackConfig: ./webpack.config.js
