@@ -28,3 +28,8 @@ export async function tealium (pubSubMessage, context) {
     return Promise.reject(error)
   }
 }
+
+export async function placement (httpTrigger) {
+  console.log('--==[[ HERE ]]==--')
+  return 'Done'
+}

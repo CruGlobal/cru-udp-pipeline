@@ -29,6 +29,12 @@ functions:
           eventType: providers/cloud.pubsub/eventTypes/topic.publish
           resource: ${env:TEALIUM_AUDIENCE_TOPIC}
 
+  placement:
+    handler: placement
+    serviceAccount: ${env:FUNCTION_SERVICE_ACCOUNT}
+    events:
+      - http:
+
 custom:
   webpack:
     webpackConfig: ./webpack.config.js
