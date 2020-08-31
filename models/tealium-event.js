@@ -15,7 +15,7 @@ import {
 import punycode from 'punycode'
 
 const DataLayerMapping = {
-  // snowplow: tealium
+  // snowplow&BigQuery: tealium
   // The tealium side of the mapping can be multiple attributes in tealium that will
   // be set to the same value
   app_id: 'app_name',
@@ -82,6 +82,9 @@ const DataLayerMapping = {
   geo_timezone: 'geo_timezone',
   domain_sessionidx: 'tealium_session_number',
   domain_sessionid: 'tealium_session_id',
+  placement: 'sob_placement',
+  placement_updated_dt: 'placement_updated_dt',
+  user_id: 'user_id',
   collector_tstamp: ['tealium_timestamp_utc', 'tealium_timestamp_epoch']
 }
 const HeaderMapping = {
@@ -177,4 +180,45 @@ class TealiumEvent {
   }
 }
 
-export default TealiumEvent
+export { TealiumEvent }
+
+class BQTealiumEvent {
+  constructor (event) {
+    this.event = event
+  }
+
+  dataLayer (extra = {}) {
+    return omitBy({
+      ...this.standardParameters,
+      ...transform(DataLayerMapping, (result, value, key) => {
+      if(value === 'placement_updated_dt') {
+        //  convert BigQuery timestamp object to a valid Date
+        result[value] = new Date(this.fieldValue(this.event[key], value).value)
+      } else {
+        result[value] = this.fieldValue(this.event[key], value)
+      }
+      }, {}),
+      ...extra
+    }, isNil)
+  }
+
+  get standardParameters () {
+    return {
+      tealium_account: 'udp',
+      tealium_profile: 'main',
+      tealium_datasource: '71d68m'
+    }
+  }
+
+  fieldValue (value, field) {
+    if (includes(uuidFields, field)) {
+      return uuidPattern.test(value) ? value : undefined
+    }
+    if (field === 'tealium_timestamp_epoch' && isString(value)) {
+      return Date.parse(value)
+    }
+    return value
+  }
+}
+
+export { BQTealiumEvent }
