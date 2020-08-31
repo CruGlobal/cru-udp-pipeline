@@ -132,7 +132,7 @@ class TealiumEvent {
   }
 
   cookies () {
-    return `TAPID=udp/main>${this.event.data['network_userid']}|`
+    return `TAPID=udp/main>${this.event.data.network_userid}|`
   }
 
   get identityParameters () {
@@ -191,12 +191,12 @@ class BQTealiumEvent {
     return omitBy({
       ...this.standardParameters,
       ...transform(DataLayerMapping, (result, value, key) => {
-      if(value === 'placement_updated_dt') {
+        if (value === 'placement_updated_dt') {
         //  convert BigQuery timestamp object to a valid Date
-        result[value] = new Date(this.fieldValue(this.event[key], value).value)
-      } else {
-        result[value] = this.fieldValue(this.event[key], value)
-      }
+          result[value] = new Date(this.fieldValue(this.event[key], value).value)
+        } else {
+          result[value] = this.fieldValue(this.event[key], value)
+        }
       }, {}),
       ...extra
     }, isNil)
