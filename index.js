@@ -34,7 +34,7 @@ export async function tealium (pubSubMessage, context) {
   }
 }
 
-export async function placement (httpTrigger) {
+export async function placement (req, res) {
   const query = 'SELECT * FROM `derived.user_placement_identified` WHERE placement_updated_dt >= TIMESTAMP_SUB(current_timestamp, INTERVAL 1 DAY)'
   const options = {
     query: query,
@@ -46,6 +46,7 @@ export async function placement (httpTrigger) {
     console.log(`Job ${job.id} started.`)
     const [rows] = await job.getQueryResults()
     await bqHandler(rows)
+    await res.send('Success')
     return 'Success'
   } catch (error) {
     await rollbar.error(error.toString(), error)
