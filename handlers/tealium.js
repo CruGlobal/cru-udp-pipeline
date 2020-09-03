@@ -7,7 +7,7 @@ import uniqBy from 'lodash/uniqBy'
 import startsWith from 'lodash/startsWith'
 import bent from 'bent'
 import retry from 'async-retry'
-import TealiumEvent from '../models/tealium-event'
+import { TealiumEvent, BQTealiumEvent } from '../models/tealium-event'
 
 export const handler = async (lambdaEvent) => {
   if (typeof lambdaEvent.Records !== 'undefined') {
@@ -41,7 +41,7 @@ export const handler = async (lambdaEvent) => {
         const requests = uniqBy(validEvents, 'event_id').map(event => retry(async bail => {
           const tealium = new TealiumEvent(event)
           const extraParams = {
-            'cp.trace_id': tealium.dataLayer()['tealium_trace_id']
+            'cp.trace_id': tealium.dataLayer().tealium_trace_id
           }
           if (event.app_id === 'adobecampaign') {
             extraParams['cp.trace_id'] = 'MULvuyum'
@@ -57,6 +57,42 @@ export const handler = async (lambdaEvent) => {
         return `Processed ${requests.length} events.`
       } catch (error) {
         await rollbar.error('Error sending event to Tealium', error)
+        return Promise.reject(error)
+      }
+    } else {
+      return Promise.resolve('Nothing processed')
+    }
+  } else {
+    return Promise.resolve('Nothing processed')
+  }
+}
+
+export const bqHandler = async (rows) => {
+  if (typeof rows !== 'undefined') {
+    if (rows.length > 0) {
+      try {
+        // send uniquely valid events to Tealium event API
+        const tealiumPOST = bent('https://collect.tealiumiq.com', 'POST')
+        const requests = uniqBy(rows, 'user_id').map((row) =>
+          retry(
+            async (bail) => {
+              const tealium = new BQTealiumEvent(row)
+              const extraParams = {
+                'cp.trace_id': tealium.dataLayer().tealium_trace_id
+              }
+              return tealiumPOST(
+                '/udp/main/2/i.gif',
+                { data: tealium.dataLayer(extraParams) }
+                // tealium.headers({ Cookie: tealium.cookies() })
+              )
+            },
+            { retries: 3 }
+          )
+        )
+        await Promise.all(requests)
+        return `Processed ${requests.length} events.`
+      } catch (error) {
+        await rollbar.error('Error sending user placement data to Tealium', error)
         return Promise.reject(error)
       }
     } else {

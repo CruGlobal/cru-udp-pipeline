@@ -19,6 +19,9 @@
     "test": "jest --forceExit --coverage"
   },
   "devDependencies": {
+    "@babel/core": "^7.11.4",
+    "@babel/node": "^7.10.5",
+    "@babel/preset-env": "^7.11.0",
     "dotenv": "^8.2.0",
     "rollbar-sourcemap-webpack-plugin": "^2.11.1",
     "serverless": "1.72.0",
