@@ -33,7 +33,7 @@ functions:
     handler: placement
     serviceAccount: ${env:FUNCTION_SERVICE_ACCOUNT}
     events:
-      - http:
+      - http: foo
 
 custom:
   webpack:
