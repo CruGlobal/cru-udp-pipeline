@@ -44,8 +44,22 @@ export async function placement (req, res) {
     const bigquery = new BigQuery()
     const [job] = await bigquery.createQueryJob(options)
     console.log(`Job ${job.id} started.`)
-    const [rows] = await job.getQueryResults()
-    await bqHandler(rows)
+    async function manualPaginationCallback (err, rows, nextQuery, apiResponse) {
+      await bqHandler(rows)
+      if (nextQuery) {
+        // More results exist.
+        job.getQueryResults(nextQuery, manualPaginationCallback)
+      }
+    }
+
+   job.getQueryResults(
+      {
+        maxResults: 100,
+        autoPaginate: false
+      },
+      manualPaginationCallback
+    )
+
     await res.send('Success')
     return 'Success'
   } catch (error) {
