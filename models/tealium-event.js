@@ -85,6 +85,7 @@ const DataLayerMapping = {
   placement: 'sob_placement',
   placement_updated_dt: 'placement_updated_dt',
   user_id: 'user_id',
+  taxonomy: 'taxonomy',
   collector_tstamp: ['tealium_timestamp_utc', 'tealium_timestamp_epoch']
 }
 const HeaderMapping = {
@@ -98,6 +99,8 @@ class TealiumEvent {
   static get MOBILE_CONTEXT () { return 'contexts_com_snowplowanalytics_snowplow_mobile_context_1' }
 
   static get IDS_CONTEXT () { return 'contexts_org_cru_ids_1' }
+
+  static get TAXONOMY_CONTEXT () { return 'contexts_org_cru_taxonomy_1' }
 
   constructor (event) {
     this.event = event
@@ -152,6 +155,11 @@ class TealiumEvent {
           identityParams[field] = this.fieldValue(ids[field], field)
         }
       })
+    }
+
+    if (isArray(this.event.data[TealiumEvent.TAXONOMY_CONTEXT])) {
+      const taxonomy = this.event.data[TealiumEvent.TAXONOMY_CONTEXT][0]
+      identityParams.taxonomy = this.fieldValue(taxonomy.taxonomy, 'taxonomy')
     }
 
     // Set tealium_visitor_id to the domain_userid or device_idfa, whichever is first present.
