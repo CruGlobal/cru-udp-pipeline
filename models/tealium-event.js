@@ -86,6 +86,11 @@ const DataLayerMapping = {
   placement_updated_dt: 'placement_updated_dt',
   user_id: 'user_id',
   taxonomy: 'taxonomy',
+  target_url: 'target_url',
+  element_id: 'element_id',
+  element_classes: 'element_classes',
+  element_target: 'element_target',
+  element_content: 'element_content',
   collector_tstamp: ['tealium_timestamp_utc', 'tealium_timestamp_epoch']
 }
 const HeaderMapping = {
