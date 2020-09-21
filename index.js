@@ -52,7 +52,7 @@ export async function placement (req, res) {
       }
     }
 
-   job.getQueryResults(
+    job.getQueryResults(
       {
         maxResults: 100,
         autoPaginate: false
