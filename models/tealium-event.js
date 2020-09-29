@@ -84,7 +84,7 @@ const DataLayerMapping = {
   domain_sessionid: 'tealium_session_id',
   placement: 'sob_placement',
   placement_updated_at: 'placement_updated_at',
-  snowplow_thirdparty_id: 'snowplow_thirdparty_id',
+  network_userid: 'snowplow_thirdparty_id',
   taxonomy: 'taxonomy',
   target_url: 'target_url',
   element_id: 'element_id',
@@ -161,7 +161,9 @@ class TealiumEvent {
         }
       })
     }
-
+    if(typeof this.event.data[TealiumEvent.TAXONOMY_CONTEXT] !== 'undefined') {
+      console.log(this.event.data[TealiumEvent.TAXONOMY_CONTEXT])
+    }
     if (isArray(this.event.data[TealiumEvent.TAXONOMY_CONTEXT])) {
       const taxonomy = this.event.data[TealiumEvent.TAXONOMY_CONTEXT][0]
       identityParams.taxonomy = this.fieldValue(taxonomy.taxonomy, 'taxonomy')
