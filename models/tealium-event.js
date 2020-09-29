@@ -83,8 +83,8 @@ const DataLayerMapping = {
   domain_sessionidx: 'tealium_session_number',
   domain_sessionid: 'tealium_session_id',
   placement: 'sob_placement',
-  placement_updated_dt: 'placement_updated_dt',
-  user_id: 'user_id',
+  placement_updated_at: 'placement_updated_at',
+  snowplow_thirdparty_id: 'snowplow_thirdparty_id',
   taxonomy: 'taxonomy',
   target_url: 'target_url',
   element_id: 'element_id',
@@ -204,7 +204,7 @@ class BQTealiumEvent {
     return omitBy({
       ...this.standardParameters,
       ...transform(DataLayerMapping, (result, value, key) => {
-        if (value === 'placement_updated_dt') {
+        if (value === 'placement_updated_at') {
         //  convert BigQuery timestamp object to a valid Date
           result[value] = new Date(this.fieldValue(this.event[key], value).value)
         } else {
