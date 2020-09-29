@@ -35,7 +35,7 @@ export async function tealium (pubSubMessage, context) {
 }
 
 export async function placement (req, res) {
-  const query = 'SELECT * FROM `derived.user_placement_identified` WHERE placement_updated_dt >= TIMESTAMP_SUB(current_timestamp, INTERVAL 1 DAY)'
+  const query = 'SELECT * FROM `derived.user_placement_identified_tealium` WHERE placement_updated_at >= TIMESTAMP_SUB(current_timestamp, INTERVAL 1 DAY)'
   const options = {
     query: query,
     location: 'US'
