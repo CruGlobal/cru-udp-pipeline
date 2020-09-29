@@ -161,7 +161,7 @@ class TealiumEvent {
         }
       })
     }
-
+    console.log(this.event.data[TealiumEvent.TAXONOMY_CONTEXT])
     if (isArray(this.event.data[TealiumEvent.TAXONOMY_CONTEXT])) {
       const taxonomy = this.event.data[TealiumEvent.TAXONOMY_CONTEXT][0]
       identityParams.taxonomy = this.fieldValue(taxonomy.taxonomy, 'taxonomy')
