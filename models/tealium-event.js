@@ -161,12 +161,10 @@ class TealiumEvent {
         }
       })
     }
-    if(typeof this.event.data[TealiumEvent.TAXONOMY_CONTEXT] !== 'undefined') {
-      console.log(this.event.data[TealiumEvent.TAXONOMY_CONTEXT])
-    }
+
     if (isArray(this.event.data[TealiumEvent.TAXONOMY_CONTEXT])) {
       const taxonomy = this.event.data[TealiumEvent.TAXONOMY_CONTEXT][0]
-      identityParams.taxonomy = this.fieldValue(taxonomy.taxonomy, 'taxonomy')
+      identityParams.taxonomy = taxonomy.taxonomy.toString()
     }
 
     // Set tealium_visitor_id to the domain_userid or device_idfa, whichever is first present.
