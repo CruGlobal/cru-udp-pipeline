@@ -85,6 +85,7 @@ const DataLayerMapping = {
   placement: 'sob_placement',
   placement_updated_at: 'placement_updated_at',
   network_userid: 'snowplow_thirdparty_id',
+  snowplow_thirdparty_id: 'snowplow_thirdparty_id',
   target_url: 'target_url',
   element_id: 'element_id',
   element_classes: 'element_classes',
