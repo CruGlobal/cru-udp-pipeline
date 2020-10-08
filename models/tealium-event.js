@@ -85,6 +85,11 @@ const DataLayerMapping = {
   placement: 'sob_placement',
   placement_updated_at: 'placement_updated_at',
   snowplow_thirdparty_id: 'snowplow_thirdparty_id',
+  target_url: 'target_url',
+  element_id: 'element_id',
+  element_classes: 'element_classes',
+  element_target: 'element_target',
+  element_content: 'element_content',
   collector_tstamp: ['tealium_timestamp_utc', 'tealium_timestamp_epoch']
 }
 const HeaderMapping = {
@@ -100,8 +105,6 @@ class TealiumEvent {
   static get IDS_CONTEXT () { return 'contexts_org_cru_ids_1' }
 
   static get TAXONOMY_CONTEXT () { return 'contexts_org_cru_taxonomy_1' }
-
-  static get LINK_CLICK_CONTEXT () { return 'unstruct_event_com_snowplowanalytics_snowplow_link_click_1' }
 
   constructor (event) {
     this.event = event
@@ -161,18 +164,6 @@ class TealiumEvent {
     if (isArray(this.event.data[TealiumEvent.TAXONOMY_CONTEXT])) {
       const taxonomy = this.event.data[TealiumEvent.TAXONOMY_CONTEXT][0]
       identityParams.taxonomy = taxonomy.taxonomy.toString()
-    }
-
-    if(isObject(this.event.data[TealiumEvent.LINK_CLICK_CONTEXT])) {
-      forEach(['targetUrl', 'elementId', 'elementClasses', 'elementTarget', 'elementContent'], field => {
-        if (typeof this.event.data[TealiumEvent.LINK_CLICK_CONTEXT][field] !== 'undefined' && field) {
-          if(field == 'elementClasses') {
-            identityParams['elementClasses'] = this.event.data[TealiumEvent.LINK_CLICK_CONTEXT]['elementClasses'].toString()
-          } else {
-            identityParams[field] = this.event.data[TealiumEvent.LINK_CLICK_CONTEXT][field]
-          }
-        }
-      })
     }
 
     // Set tealium_visitor_id to the domain_userid or device_idfa, whichever is first present.
