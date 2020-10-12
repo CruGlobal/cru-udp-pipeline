@@ -166,7 +166,7 @@ class TealiumEvent {
 
     if (isObject(this.event.data[TealiumEvent.LINK_CLICK_CONTEXT])) {
       forEach(['targetUrl', 'elementId', 'elementClasses', 'elementTarget', 'elementContent'], field => {
-        if (typeof this.event.data[TealiumEvent.LINK_CLICK_CONTEXT][field] !== 'undefined' && field) {
+        if (typeof this.event.data[TealiumEvent.LINK_CLICK_CONTEXT][field] !== 'undefined' && this.event.data[TealiumEvent.LINK_CLICK_CONTEXT][field] !== '' && field) {
           if (field == 'elementClasses') {
             identityParams.elementClasses = this.event.data[TealiumEvent.LINK_CLICK_CONTEXT].elementClasses.toString()
           } else {
