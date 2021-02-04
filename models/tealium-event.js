@@ -104,6 +104,8 @@ class TealiumEvent {
 
   static get LINK_CLICK_CONTEXT () { return 'unstruct_event_com_snowplowanalytics_snowplow_link_click_1' }
 
+  static get ACS_CONTEXT () { return 'contexts_org_cru_acs_context_1' }
+
   constructor (event) {
     this.event = event
     this.data = this.event.data
@@ -172,6 +174,14 @@ class TealiumEvent {
           } else {
             identityParams[field] = this.event.data[TealiumEvent.LINK_CLICK_CONTEXT][field]
           }
+        }
+      })
+    }
+
+    if (isArray(this.event.data[TealiumEvent.ACS_CONTEXT])) {
+      forEach(['acs_label', 'acs_click_url'], field => {
+        if (typeof this.event.data[TealiumEvent.ACS_CONTEXT][field] !== 'undefined' && field) {
+          identityParams[field] = this.event.data[TealiumEvent.ACS_CONTEXT][field]
         }
       })
     }
