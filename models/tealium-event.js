@@ -179,9 +179,10 @@ class TealiumEvent {
     }
 
     if (isArray(this.event.data[TealiumEvent.ACS_CONTEXT])) {
+      const acsValues = this.event.data[TealiumEvent.ACS_CONTEXT][0]
       forEach(['acs_label', 'acs_click_url'], field => {
-        if (typeof this.event.data[TealiumEvent.ACS_CONTEXT][field] !== 'undefined' && field) {
-          identityParams[field] = this.event.data[TealiumEvent.ACS_CONTEXT][field]
+        if (typeof acsValues[field] !== 'undefined' && acsValues[field]) {
+          identityParams[field] = acsValues[field]
         }
       })
     }
