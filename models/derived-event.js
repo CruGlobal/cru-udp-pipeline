@@ -147,7 +147,9 @@ const BadHostnames = [
   'www.translatoruser.net',
   'www.waybackmachinedownloader.com',
   'www.wedgies.com',
-  'wwwbeta.familylife.com'
+  'wwwbeta.familylife.com',
+  'mpdx.org',
+  'task'
 ]
 
 class DerivedEvent {
