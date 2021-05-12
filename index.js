@@ -39,7 +39,7 @@ export async function acs (pubSubMessage, context) {
     const csvData = new Audience(pubSubMessage.data).acsCsv
     await s3.upload({
       Bucket: process.env.S3_BUCKET,
-      Key: `tealium_to_acs_${new Date().toISOString()}.csv`,
+      Key: `tealium_to_acs_${new Date().toISOString().slice(0,10)}.csv`,
       Body: csvData,
     }, (err, data) => {
       console.log(`File uploaded successfully to ${data.Location}`)
