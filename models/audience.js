@@ -41,8 +41,16 @@ class Audience {
     }, isNil)
   }
 
-  get acsCsv () {
-    const csvStr = ACSMapping.join(",") + "\n";
+  acsCsv (s3Data) {
+    let csvStr = "";
+    // If CSV file exists in S3 Bucket, use that csv string
+    if (s3Data) {
+      csvStr = s3Data;
+    } else {
+      // If not, create new csv string
+      csvStr = ACSMapping.join(",") + "\n";
+    }
+
     const jsonData =  omitBy({
       ...transform(
         ACSMapping,

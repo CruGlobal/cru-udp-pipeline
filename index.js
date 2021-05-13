@@ -36,14 +36,41 @@ export async function acs (pubSubMessage, context) {
   })
 
   try {
-    const csvData = new Audience(pubSubMessage.data).acsCsv
-    await s3.upload({
-      Bucket: process.env.S3_BUCKET,
-      Key: `tealium_to_acs_${new Date().toISOString().slice(0,10)}.csv`,
-      Body: csvData,
-    }, (err, data) => {
-      console.log(`File uploaded successfully to ${data.Location}`)
-    })
+    await s3.getObject(
+      { Bucket: process.env.S3_BUCKET, Key: "tealium_to_acs.csv" },
+      async (err, data) => {
+        if (data) {
+          const csvData = new Audience(pubSubMessage.data).acsCsv(data.Body.toString());
+          await s3.upload(
+            {
+              Bucket: process.env.S3_BUCKET,
+              Key: "tealium_to_acs.csv",
+              Body: csvData,
+            },
+            (err, data) => {
+              if (err) throw err;
+              console.log(`File uploaded successfully to ${data.Location}`);
+            }
+          );
+          // If the specific error code is 'NoSuchKey', file does not exist. So let's create it.
+        } else if (err && err.code === "NoSuchKey") {
+          const csvData = new Audience(pubSubMessage.data).acsCsv();
+          await s3.upload(
+            {
+              Bucket: process.env.S3_BUCKET,
+              Key: "tealium_to_acs.csv",
+              Body: csvData,
+            },
+            (err, data) => {
+              if (err) throw err;
+              console.log(`File uploaded successfully to ${data.Location}`);
+            }
+          );
+        } else {
+          throw err;
+        }
+      }
+    );
     return 'Success'
   } catch (error) {
     await rollbar.error(error.toString(), error)
