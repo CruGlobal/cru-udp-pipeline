@@ -58,7 +58,7 @@ export async function acs (pubSubMessage, context) {
           await s3.upload(
             {
               Bucket: process.env.S3_BUCKET,
-              Key: "tealium_to_acs.csv",
+              Key: "adobeftp/Tealium/tealium_to_acs.csv",
               Body: csvData,
             },
             (err, data) => {
