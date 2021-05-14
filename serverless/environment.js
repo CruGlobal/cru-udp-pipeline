@@ -11,6 +11,9 @@ module.exports = () => {
     SNOWPLOW_PIPELINE_TOPIC: process.env.SNOWPLOW_PIPELINE_TOPIC || '',
     BIGQUERY_PROJECT_ID: process.env.BIGQUERY_PROJECT_ID || '',
     BIGQUERY_DATASET: process.env.BIGQUERY_DATASET || '',
-    BIGQUERY_TABLE: process.env.BIGQUERY_TABLE || ''
+    BIGQUERY_TABLE: process.env.BIGQUERY_TABLE || '',
+    S3_BUCKET: process.env.S3_BUCKET || '',
+    S3_ACCESS_KEY_ID: process.env.S3_ACCESS_KEY_ID || '',
+    S3_SECRET_ACCESS_KEY: process.env.S3_SECRET_ACCESS_KEY || ''
   }
 }
