@@ -28,6 +28,14 @@ functions:
       - event:
           eventType: providers/cloud.pubsub/eventTypes/topic.publish
           resource: ${env:TEALIUM_AUDIENCE_TOPIC}
+  
+  acs:
+    handler: acs
+    serviceAccount: ${env:FUNCTION_SERVICE_ACCOUNT}
+    events:
+      - event:
+          eventType: providers/cloud.pubsub/eventTypes/topic.publish
+          resource: ${env:TEALIUM_ACS_TOPIC}
 
   placement:
     handler: placement
