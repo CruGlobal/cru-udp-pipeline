@@ -2,6 +2,7 @@ import Audience from './models/audience'
 import { BigQuery } from '@google-cloud/bigquery'
 import { handler, bqHandler } from './handlers/tealium'
 import rollbar from './config/rollbar'
+import { S3 } from 'aws-sdk'
 
 export async function audience (pubSubMessage, context) {
   try {
@@ -23,6 +24,57 @@ export async function audience (pubSubMessage, context) {
   } catch (error) {
     await rollbar.error(error.toString(), error)
     return Promise.reject(error)
+  }
+}
+
+export async function acs (pubSubMessage, context) {
+  const s3 = new S3({
+    region: 'us-east-1', 
+    accessKeyId: process.env.S3_ACCESS_KEY_ID, 
+    secretAccessKey: process.env.S3_SECRET_ACCESS_KEY,  
+    apiVersion: '2006-03-01' 
+  })
+
+  try {
+    await s3.getObject(
+      { Bucket: process.env.S3_BUCKET, Key: "adobeftp/Tealium/tealium_to_acs.csv" },
+      async (err, data) => {
+        if (data) {
+          const csvData = new Audience(pubSubMessage.data).acsCsv(data.Body.toString());
+          await s3.upload(
+            {
+              Bucket: process.env.S3_BUCKET,
+              Key: "adobeftp/Tealium/tealium_to_acs.csv",
+              Body: csvData,
+            },
+            (err, data) => {
+              if (err) throw err;
+              console.log(`File uploaded successfully to ${data.Location}`);
+            }
+          );
+          // If the specific error code is 'NoSuchKey', file does not exist. So let's create it.
+        } else if (err && err.code === "NoSuchKey") {
+          const csvData = new Audience(pubSubMessage.data).acsCsv();
+          await s3.upload(
+            {
+              Bucket: process.env.S3_BUCKET,
+              Key: "adobeftp/Tealium/tealium_to_acs.csv",
+              Body: csvData,
+            },
+            (err, data) => {
+              if (err) throw err;
+              console.log(`File uploaded successfully to ${data.Location}`);
+            }
+          );
+        } else {
+          throw err;
+        }
+      }
+    );
+    return 'Success'
+  } catch (error) {
+    await rollbar.error(error.toString(), error)
+    return Promise.reject()
   }
 }
 

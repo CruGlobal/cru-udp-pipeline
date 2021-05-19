@@ -20,6 +20,8 @@ const BigQueryMapping = {
 
 const JSONAttributes = ['properties']
 
+const ACSMapping = ['customer_email', 'geo_country']
+
 class Audience {
   constructor (data) {
     try {
@@ -37,6 +39,36 @@ class Audience {
         result[key] = JSONAttributes.includes(key) ? JSON.stringify(value) : value
       }, {})
     }, isNil)
+  }
+
+  acsCsv (s3Data) {
+    let csvStr = "";
+    // If CSV file exists in S3 Bucket, use that csv string
+    if (s3Data) {
+      csvStr = s3Data;
+    } else {
+      // If not, create new csv string
+      csvStr = ACSMapping.join(",") + "\n";
+    }
+
+    const jsonData =  omitBy({
+      ...transform(
+        ACSMapping,
+        (result, path) => {
+          const value = get(this.message, path, undefined);
+          result[path] = value;
+        },
+      {})
+    }, isNil)
+    const jsonDataToCsvStr = ACSMapping.reduce((result, key, index) => {
+      return index === 0
+        ? `${result} ${jsonData[key]}`
+        : index === ACSMapping.length - 1
+        ? `${result}, ${jsonData[key]} \n`
+        : `${result}, ${jsonData[key]}`;
+    }, csvStr)
+
+    return jsonDataToCsvStr
   }
 }
 
