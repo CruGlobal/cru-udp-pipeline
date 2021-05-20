@@ -65,7 +65,7 @@ class Audience {
         },
       {})
     }, isNil)
-    const jsonDataToCsvStr = ACSMapping.reduce((result, key, index) => {
+    const jsonDataToCsvStr = csvMapping.reduce((result, key, index) => {
       return index === 0
         ? `${result} ${jsonData[key]}`
         : index === ACSMapping.length - 1
