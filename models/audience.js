@@ -68,7 +68,7 @@ class Audience {
     const jsonDataToCsvStr = csvMapping.reduce((result, key, index) => {
       return index === 0
         ? `${result} ${jsonData[key]}`
-        : index === ACSMapping.length - 1
+        : index === csvMapping.length - 1
         ? `${result}, ${jsonData[key]} \n`
         : `${result}, ${jsonData[key]}`;
     }, csvStr)
