@@ -51,6 +51,7 @@ class Audience {
       csvStr = ACSMapping.join(",") + "\n";
     }
 
+    console.log(this.message)
     const jsonData =  omitBy({
       ...transform(
         ACSMapping,
