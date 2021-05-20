@@ -20,7 +20,12 @@ const BigQueryMapping = {
 
 const JSONAttributes = ['properties']
 
-const ACSMapping = ['customer_email', 'geo_country']
+const ACSMapping ={
+  customer_email: ['Email for Connectors'],
+  geo_country: ['Geo Country Code']
+}
+
+const csvMapping = ['customer_email', 'geo_country']
 
 class Audience {
   constructor (data) {
@@ -48,16 +53,15 @@ class Audience {
       csvStr = s3Data;
     } else {
       // If not, create new csv string
-      csvStr = ACSMapping.join(",") + "\n";
+      csvStr = csvMapping.join(",") + "\n";
     }
 
-    console.log(this.message)
     const jsonData =  omitBy({
       ...transform(
         ACSMapping,
-        (result, path) => {
-          const value = get(this.message, path, undefined);
-          result[path] = value;
+        (result, path, key) => {
+          const value = get(this.message.properties, path, undefined);
+          result[key] = value;
         },
       {})
     }, isNil)
