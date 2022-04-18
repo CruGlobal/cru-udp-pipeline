@@ -1,9 +1,9 @@
 service: cru-udp-pipeline
 frameworkVersion: '3'
-configValidationMode: error
+configValidationMode: warn
 plugins:
   - serverless-webpack
-  - serverless-google-cloudfunctions
+  - serverless-google-cloudfunctions-amazing
 
 provider:
   name: google
