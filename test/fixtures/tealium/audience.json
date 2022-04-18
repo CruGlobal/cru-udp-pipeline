@@ -1,0 +1,177 @@
+{
+  "metrics": {
+    "Weeks since first visit": 4.43,
+    "Lifetime visit count": 18.0,
+    "Average visit duration in minutes": 4.39,
+    "Lifetime event count": 117.0,
+    "Total time spent on site in minutes": 74.55,
+    "Total direct visits": 14.0,
+    "Average visits per week": 4.06
+  },
+  "dates": {
+    "Last visit": 1591210104000,
+    "audience_udp_main_115_count_ts": 1591286322000,
+    "last_visit_start_ts": 1591286322000,
+    "audience_udp_main_141_count_ts": 1591286322022,
+    "audience_udp_main_116_count_ts": 1591286322000,
+    "audience_udp_main_138_count_ts": 1591286322000,
+    "First visit": 1588544933000,
+    "audience_udp_main_102_count_ts": 1591286322000,
+    "audience_udp_main_117_count_ts": 1591286322000,
+    "audience_udp_main_130_count_ts": 1591286322000
+  },
+  "properties": {
+    "Lifetime browser versions used (favorite)": "Chrome",
+    "Last SSO Guid": "173c8ae1-82ca-2bfa-195d-9d0d362a2c71",
+    "Lifetime browser types used (favorite)": "Chrome",
+    "profile": "main",
+    "First Name": "Nicholas",
+    "visitor_id": "__udp_main__5245_nick.castelluccio@athletesinaction.org__",
+    "Lifetime devices used (favorite)": "other",
+    "Last Adobe Experience Cloud ID": "57446368995267786901729214259028933034",
+    "City": "Evanston",
+    "mbox3rdPartyId": "44dc2e46-e2cf-4ebf-acf7-93c9734c3c94",
+    "Lifetime platforms used (favorite)": "browser",
+    "Cru Staff": "1",
+    "Zip Code": "60201",
+    "Country": "US",
+    "Referring URL": "https://apply.cru.org/",
+    "Last Name": "Castelluccio",
+    "Email Address from Adobe Campaign Cru.org": "nick.castelluccio@athletesinaction.org",
+    "Last GR Master person ID": "44dc2e46-e2cf-4ebf-acf7-93c9734c3c94",
+    "account": "udp",
+    "Lifetime operating systems used (favorite)": "Linux",
+    "Email Address": "nick.castelluccio@athletesinaction.org",
+    "(BROKEN) Email Address Exists": "nick.castelluccio@athletesinaction.org"
+  },
+  "flags": {
+    "Identified Visitor by Email": true,
+    "Returning visitor": true,
+    "Identified Visitor": true
+  },
+  "replaces": [
+    "__udp_main__5002_44dc2e46-e2cf-4ebf-acf7-93c9734c3c94__",
+    "__udp_main__5004_1ca2c852-9229-621b-ddc2-88d459688269__",
+    "__udp_main__5120_f4a268b1-f8a1-434b-bced-187b81d6958f__",
+    "__udp_main__5136_57368959852946433833076074064649509600__",
+    "07abcc34-16d3-4dc9-8282-a72f668d91f4",
+    "__udp_main__5002_bf1f02b9-f830-40a7-b8ba-c3c023fddb77__",
+    "6b7262fd-4289-4d6d-be84-e7b6920f5d77",
+    "__udp_main__5136_81619438523347829482266323231961513245__",
+    "d7ed78ae-b001-44e4-a8f1-5a805db5fb95"
+  ],
+  "audiences": [
+    "Everyone",
+    "DPS-0520 Email Address",
+    "DPS-0520 Cru.org Adobe Campaign Emails",
+    "DPS-0520 Cru Staff",
+    "US Visitors",
+    "DPS-0520 All Emails",
+    "DPS-0520 Cru.org Identified Visitor by Email"
+  ],
+  "badges": [
+    "Loyal visitor",
+    "Identified User",
+    "Favorite Device - Mac Desktop",
+    "Active Visitor",
+    "Frequent visitor"
+  ],
+  "property_sets": {
+    "Page URL Visited": [
+      "https://staffweb.cru.org/",
+      "https://staffweb.cru.org/leadership-development.html",
+      "https://staffweb.cru.org/leadership-development/position-focus-tool.html",
+      "https://staffweb.cru.org/leadership-development/staff-development-cycle/position-focus-tool-resources.html",
+      "https://signon.relaysso.org/cas/login?service=https%3A%2F%2Fapply.cru.org%2Fauth%2Fcas%2Fcallback%3Furl%3Dhttps%253A%252F%252Fapply.cru.org%252Fsessions%252Fnew",
+      "https://signon.cru.org/cas/login?service=https%3A%2F%2Fcoredoctrine.cru.org%2Flogin%2Findex.php",
+      "https://signon.cru.org/cas/login?service=https%3A%2F%2Fstaffweb.cru.org%2F",
+      "https://staffweb.cru.org/mpd-donations.html",
+      "https://staffweb.cru.org/mpd-donations/my-donations/expense-report.html",
+      "https://staffweb.cru.org/pay-benefits-staff-expenses/staff-handbook.html",
+      "https://staffweb.cru.org/pay-benefits-staff-expenses/staff-handbook/operating-reimbursements-manual.html",
+      "https://staffweb.cru.org/pay-benefits-staff-expenses/staff-handbook/operating-reimbursements-manual.html?page=2",
+      "https://staffweb.cru.org/operations/financial-services/field-financial-policy-manual.html",
+      "https://staffweb.cru.org/pay-benefits-staff-expenses/staff-handbook/hr-handbook-rmo.html",
+      "https://staffweb.cru.org/pay-benefits-staff-expenses/staff-handbook/hr-handbook-rmo.html?page=5",
+      "https://staffweb.cru.org/pay-benefits-staff-expenses/staff-handbook/operating-reimbursements-manual.html?page=1",
+      "https://staffweb.cru.org/staff-ministry-card/policies-procedures.html",
+      "https://staffweb.cru.org/pay-benefits-staff-expenses/reimbursements.html"
+    ],
+    "network_userid_array": [
+      "6b7262fd-4289-4d6d-be84-e7b6920f5d77"
+    ],
+    "Domains Visited": [
+      "signon.cru.org",
+      "staffweb.cru.org",
+      "athletesinaction.org",
+      "signon.relaysso.org",
+      "donation"
+    ]
+  },
+  "metric_sets": {
+    "Lifetime operating systems used": {
+      "Mac OS X": 6.0,
+      "Linux": 10.0
+    },
+    "Lifetime devices used": {
+      "Mac desktop": 6.0,
+      "other": 10.0
+    },
+    "Lifetime browser versions used": {
+      "Chrome": 16.0
+    },
+    "Lifetime browser types used": {
+      "Chrome": 16.0
+    },
+    "Lifetime platforms used": {
+      "browser": 17.0
+    }
+  },
+  "creation_ts": 1588544933000,
+  "_id": "__udp_main__5245_nick.castelluccio@athletesinaction.org__",
+  "expire_at": 1625338104000,
+  "secondary_ids": {
+    "5120": "f4a268b1-f8a1-434b-bced-187b81d6958f",
+    "5002": "44dc2e46-e2cf-4ebf-acf7-93c9734c3c94",
+    "5004": "1ca2c852-9229-621b-ddc2-88d459688269",
+    "5136": "81619438523347829482266323231961513245",
+    "5245": "nick.castelluccio@athletesinaction.org"
+  },
+  "_dctrace": [
+    "us-east-1_visitor_processor_i-0cf11a465dc037f73"
+  ],
+  "audiences_joined_at": {
+    "udp_main_130": 1589996470031,
+    "udp_main_102": 1588544933282,
+    "udp_main_115": 1589995641852,
+    "udp_main_116": 1589988855231,
+    "udp_main_138": 1590519509039,
+    "udp_main_117": 1589995641852,
+    "udp_main_141": 1591286322022
+  },
+  "_visits_expire_at": {
+    "1622505600000": [
+      "8c36f1e13e721217f0232c7b09d8e35af56dbf7979dbf650ae76b567ed614117",
+      "1ca1f888fa224727cbac4e231f3560c13df3da0c36d33d9bee79df3275d86ce2",
+      "418b30e0e2acf00875e92cdf98d851eab882a3d3c3b9028cee075bf071daf6b7",
+      "2382d9bc5d7fd3ec00d941d82a3fca89e1c8bc477b0074f6a1cf9f8868caa0e1",
+      "74aa0133053c3a2eda2521f95720b93f41cb187c6a30b3a8c15dd28e759c3170",
+      "bb4a955034b8864f3898b6fbb2ada05638de1d8918e4b540393c9ecd99f815e5",
+      "f27620a1ec285a886e88722287d317da5b40d2e0acbcaaa2369ba633ab01b21f",
+      "fefa74ad243161ff1327a333008c400c736ae5b52f78867b1ed46f4d18f6e2c9",
+      "bd65debc1f25ec08975ab3e6bdc9d0000c436005938445ec0b1de5da8e90132e",
+      "fe2c8efcd6c2bb35bf47298d8075ff2f330a9dd7c00b7b843d43d4ee25b47f16",
+      "1122ed575d6355fe641c69894d49e987483eb121868e7945387a4cc7d8fc72a8",
+      "373750bbf11a73eb5ab268e9190d4be201b2ea7fe8aeed268f68eb3dbe1bf10e",
+      "7f6cc387be2d09c25ff615e208e45f8a186b123229a2abda1b510519342ab53f",
+      "b8c05769a7f1a5574b61b94b6ab433758a91057f81884e42e766c3446692c567",
+      "4c3fb450c4ecd8309e3771a5aa0d2eb01e76aa89700f5b59e0055c8597e1218d"
+    ],
+    "1625097600000": [
+      "9a60d18213e11ce71fef36cb572bf412d807a9e4a0745641b461e35ee122338b",
+      "d9245257348b662ab6df02c560f68428198e5d4fd2a5517e2b3c55ebd421c72a",
+      "9f1e070b3484da4247f865e7816ea3e3716457844e0dedcbf7e3ae8a94f99d14"
+    ]
+  },
+  "last_visit_id": "418b30e0e2acf00875e92cdf98d851eab882a3d3c3b9028cee075bf071daf6b7"
+}
