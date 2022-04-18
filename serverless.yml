@@ -7,6 +7,7 @@ plugins:
 
 provider:
   name: google
+  stage: ${env:ENVIRONMENT}
   runtime: nodejs16
   project: cru-snowplow-prod-1
   region: us-east4
