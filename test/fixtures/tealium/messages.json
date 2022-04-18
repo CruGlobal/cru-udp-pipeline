@@ -1,0 +1,83 @@
+{
+  "metrics": {
+    "Weeks since first visit": 2.29,
+    "Lifetime visit count": 1.0,
+    "Average visit duration in minutes": 0.0,
+    "Lifetime event count": 2.0,
+    "Total direct visits": 1.0,
+    "Total time spent on site in minutes": 0.0,
+    "Average visits per week": 0.44
+  },
+  "dates": {
+    "Last visit": 1591215781000,
+    "last_visit_start_ts": 1591215781000,
+    "audience_udp_main_141_count_ts": 1591217581779,
+    "First visit": 1589815794971,
+    "audience_udp_main_102_count_ts": 1591215781388
+  },
+  "properties": {
+    "Zip Code": "20149",
+    "profile": "main",
+    "First Name": "Susan",
+    "visitor_id": "__udp_main__5120_0d47ef08-be82-46e5-9634-038403319628__",
+    "Country": "US",
+    "City": "Ashburn",
+    "Last Name": "Van Dyke",
+    "Last GR Master person ID": "f3f97afc-2a48-4c24-85b4-8de6bcd0b646",
+    "mbox3rdPartyId": "f3f97afc-2a48-4c24-85b4-8de6bcd0b646",
+    "Lifetime platforms used (favorite)": "browser",
+    "account": "udp"
+  },
+  "flags": {
+    "Identified Visitor": true
+  },
+  "replaces": [
+    "__udp_main__5002_f3f97afc-2a48-4c24-85b4-8de6bcd0b646__",
+    "ffaef590-2699-4b40-baa7-1a293721cd59",
+    "262b4df4-3db5-4b62-a02b-3d35880674a4"
+  ],
+  "audiences": [
+    "Everyone",
+    "US Visitors"
+  ],
+  "badges": [
+    "Loyal visitor",
+    "Identified User"
+  ],
+  "property_sets": {
+    "Page URL Visited": [
+      "siebel://donation/0987809",
+      "siebel://donation/2399377"
+    ],
+    "Domains Visited": [
+      "donation"
+    ]
+  },
+  "metric_sets": {
+    "Lifetime platforms used": {
+      "browser": 1.0
+    }
+  },
+  "creation_ts": 1589815794971,
+  "_id": "__udp_main__5120_0d47ef08-be82-46e5-9634-038403319628__",
+  "expire_at": 1625343781000,
+  "secondary_ids": {
+    "5002": "f3f97afc-2a48-4c24-85b4-8de6bcd0b646",
+    "5120": "0d47ef08-be82-46e5-9634-038403319628"
+  },
+  "_dctrace": [
+    "us-east-1_visitor_processor_i-000dd7f1880dfe54a"
+  ],
+  "audiences_joined_at": {
+    "udp_main_102": 1591215781388,
+    "udp_main_141": 1591217581779
+  },
+  "_visits_expire_at": {
+    "1622505600000": [
+      "005d917ecd68643d1ac13926778a595f8f5f93b86788eeafc755f3839852078d",
+      "4d1b4a40dd425b7dff1439c9e757e8d04264b20dbd2b32e7a2ba3bb189bef132",
+      "2cd015ee0933b676adce8625972568071086d01408d7b8fa5d54d427e9cbce74",
+      "34afe53605f3d11da4092059c6738afb9c50fdd0187ad5b6b512174216d417f0"
+    ]
+  }
+}

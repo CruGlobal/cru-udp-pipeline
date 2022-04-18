@@ -169,7 +169,7 @@ class TealiumEvent {
     if (isObject(this.event.data[TealiumEvent.LINK_CLICK_CONTEXT])) {
       forEach(['targetUrl', 'elementId', 'elementClasses', 'elementTarget', 'elementContent'], field => {
         if (typeof this.event.data[TealiumEvent.LINK_CLICK_CONTEXT][field] !== 'undefined' && this.event.data[TealiumEvent.LINK_CLICK_CONTEXT][field] !== '' && field) {
-          if (field == 'elementClasses' && this.event.data[TealiumEvent.LINK_CLICK_CONTEXT].elementClasses.length > 0) {
+          if (field === 'elementClasses' && this.event.data[TealiumEvent.LINK_CLICK_CONTEXT].elementClasses.length > 0) {
             identityParams.elementClasses = this.event.data[TealiumEvent.LINK_CLICK_CONTEXT].elementClasses.toString()
           } else {
             identityParams[field] = this.event.data[TealiumEvent.LINK_CLICK_CONTEXT][field]

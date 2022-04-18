@@ -1,16 +1,25 @@
 service: cru-udp-pipeline
+frameworkVersion: '3'
+configValidationMode: error
+plugins:
+  - serverless-webpack
+  - serverless-google-cloudfunctions
 
 provider:
   name: google
-  runtime: nodejs10
+  runtime: nodejs16
   project: cru-snowplow-prod-1
   region: us-east4
   credentials: ./keyfile.json
-  environment: ${file(serverless/environment.js)}
+  environment: ${file(env.js)}
 
-plugins:
-  - serverless-webpack
-  - serverless-google-cloudfunctions-amazing
+custom:
+  webpack:
+    webpackConfig: ./webpack.config.js
+    includeModules: true
+    packager: yarn
+    excludeFiles: '**/*.test.js'
+    excludeRegex: \.ts|test|\.map
 
 functions:
   tealium:
@@ -42,10 +51,3 @@ functions:
     serviceAccount: ${env:FUNCTION_SERVICE_ACCOUNT}
     events:
       - http: foo
-
-custom:
-  webpack:
-    webpackConfig: ./webpack.config.js
-    includeModules: true
-    packager: yarn
-    excludeFiles: '**/*.test.js'
